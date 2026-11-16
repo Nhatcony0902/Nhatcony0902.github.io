@@ -1,0 +1,1386 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Pham Long Nhat · AI Engineer</title>
+<meta name="description" content="AI engineer in Hanoi. I build AI chatbots that answer from your documents, online stores with a 3D product designer, and automation bots, with test numbers to back them.">
+<meta property="og:title" content="Pham Long Nhat · AI Engineer">
+<meta property="og:description" content="AI chatbots and 3D websites that actually ship, with the numbers to prove it.">
+<meta property="og:image" content="assets/img/gc-chat.jpg">
+<script>
+(function () {
+  var d = document.documentElement, l;
+  d.classList.add('js');
+  try { l = localStorage.getItem('lang-pick'); } catch (e) {}
+  if (l !== 'vi' && l !== 'en') l = 'en';
+  d.lang = l;
+})();
+</script>
+<script type="importmap">
+{ "imports": {
+  "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.min.js",
+  "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
+} }
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+/* Layout: dark blueprint hero with the person ringed by the live agent pipeline,
+   proof strip, bento services, a 3D lab you can touch, full-bleed product bands, process, FAQ.
+   One primary action everywhere: message on Zalo. */
+:root {
+  --paper: #f3f4f7;
+  --surface: #ffffff;
+  --ink: #0f1b2a;
+  --muted: #55637a;
+  --line: #d9dee6;
+  --accent: #1d49c9;
+  --accent-soft: #e4eafb;
+  --pass: #0f7a52;
+  --pass-soft: #dff3ea;
+  --miss: #b4470f;
+  --miss-soft: #fbe9dc;
+  --night: #07080b;
+  --night-ink: #eef2f8;
+  --night-muted: #9aa6b8;
+  --night-line: #1f2733;
+  --glow: #2f5cf0;
+  --cta: #1d5cf5;
+  --display: "Bricolage Grotesque", "Be Vietnam Pro", system-ui, sans-serif;
+  --body: "Be Vietnam Pro", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --mono: "JetBrains Mono", ui-monospace, Consolas, monospace;
+  --ease: cubic-bezier(.2, .7, .2, 1);
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --paper: #0b1018; --surface: #121a26; --ink: #e8edf4; --muted: #94a2b8; --line: #243042;
+    --accent: #8fb0ff; --accent-soft: #1a2947; --pass: #5fd3a2; --pass-soft: #12352a;
+    --miss: #f2a36b; --miss-soft: #3b2415; --night: #05070a; --night-line: #1a222d; color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --paper: #0b1018; --surface: #121a26; --ink: #e8edf4; --muted: #94a2b8; --line: #243042;
+  --accent: #8fb0ff; --accent-soft: #1a2947; --pass: #5fd3a2; --pass-soft: #12352a;
+  --miss: #f2a36b; --miss-soft: #3b2415; --night: #05070a; --night-line: #1a222d; color-scheme: dark;
+}
+
+html[lang="vi"] [data-l="en"], html[lang="en"] [data-l="vi"] { display: none !important; }
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; scroll-padding-top: 72px; }
+body { margin: 0; background: var(--paper); color: var(--ink); font: 400 1rem/1.65 var(--body); -webkit-font-smoothing: antialiased; overflow-x: hidden; }
+img { max-width: 100%; display: block; }
+a { color: var(--accent); text-underline-offset: 3px; }
+a:focus-visible, button:focus-visible, summary:focus-visible, input:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 4px; }
+h1, h2, h3 { font-family: var(--display); line-height: 1.06; margin: 0; text-wrap: balance; letter-spacing: -0.02em; }
+p { margin: 0; }
+ul, ol { margin: 0; padding: 0; list-style: none; }
+
+.wrap { max-width: 1180px; margin-inline: auto; padding-left: max(20px, env(safe-area-inset-left, 0px)); padding-right: max(20px, env(safe-area-inset-right, 0px)); }
+.label { font: 600 0.72rem/1.3 var(--mono); letter-spacing: 0.09em; text-transform: uppercase; color: var(--muted); }
+
+/* reveal on scroll */
+html.js .rv { opacity: 0; transform: translateY(26px); transition: opacity .8s var(--ease), transform .8s var(--ease); transition-delay: var(--d, 0s); }
+html.js .rv.in { opacity: 1; transform: none; }
+
+/* buttons */
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 11px 18px; border-radius: 10px;
+  font: 600 0.95rem var(--body); text-decoration: none; border: 1px solid var(--ink); cursor: pointer;
+  background: var(--ink); color: var(--paper); transition: transform .2s var(--ease), box-shadow .2s ease, opacity .2s ease;
+}
+.btn:hover { transform: translateY(-1px); }
+.btn.ghost { background: transparent; color: var(--ink); border-color: var(--line); }
+.btn.zalo { position: relative; overflow: hidden; background: var(--cta); border-color: var(--cta); color: #fff; box-shadow: 0 10px 30px -10px color-mix(in srgb, var(--cta) 85%, transparent); }
+.btn.zalo::after { content: ""; position: absolute; inset: 0; background: linear-gradient(110deg, transparent 30%, rgba(255,255,255,.35) 50%, transparent 70%); transform: translateX(-120%); animation: shine 4.5s ease-in-out infinite; }
+@keyframes shine { 0%, 60% { transform: translateX(-120%); } 85%, 100% { transform: translateX(120%); } }
+.btn.big { padding: 15px 24px; font-size: 1.04rem; border-radius: 12px; }
+.btn svg { width: 18px; height: 18px; flex: none; }
+
+/* header */
+.top { position: sticky; top: 0; z-index: 30; background: color-mix(in srgb, var(--night) 82%, transparent); backdrop-filter: blur(14px) saturate(140%); border-bottom: 1px solid var(--night-line); color: var(--night-ink); }
+.top .wrap { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding-block: 11px; }
+.brand { display: inline-flex; align-items: center; gap: 10px; font: 700 1.02rem var(--display); color: var(--night-ink); text-decoration: none; white-space: nowrap; }
+.brand i { width: 26px; height: 26px; border-radius: 8px; background: conic-gradient(from 200deg, #8fb0ff, #5ee0b0, #2f5cf0, #8fb0ff); display: grid; place-items: center; font: 700 0.72rem var(--mono); font-style: normal; color: #07080b; }
+.nav { display: flex; align-items: center; gap: 20px; font-size: 0.9rem; }
+.nav a:not(.btn) { color: var(--night-muted); text-decoration: none; transition: color .15s ease; }
+.nav a:not(.btn):hover { color: var(--night-ink); }
+.nav .btn { padding: 7px 13px; font-size: 0.88rem; gap: 5px; }
+.langs { display: inline-flex; border: 1px solid var(--night-line); border-radius: 8px; overflow: hidden; }
+.langs button { font: 600 0.74rem var(--mono); letter-spacing: 0.06em; padding: 6px 9px; border: 0; background: transparent; color: var(--night-muted); cursor: pointer; }
+.langs button[aria-pressed="true"] { background: var(--night-ink); color: var(--night); }
+@media (max-width: 960px) { .nav a:not(.btn) { display: none; } }
+@media (max-width: 420px) { .nav .btn span.long { display: none; } }
+
+/* hero */
+.hero { position: relative; overflow: hidden; background: var(--night); color: var(--night-ink); isolation: isolate; }
+.hero::before {
+  content: ""; position: absolute; inset: 0; z-index: -1;
+  background-image: linear-gradient(rgba(255,255,255,.05) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.05) 1px, transparent 1px);
+  background-size: 56px 56px; background-position: -1px -1px;
+  -webkit-mask-image: radial-gradient(ellipse 75% 70% at 62% 38%, #000 25%, transparent 78%);
+          mask-image: radial-gradient(ellipse 75% 70% at 62% 38%, #000 25%, transparent 78%);
+}
+.hero::after {
+  content: ""; position: absolute; inset: 0; z-index: -1; pointer-events: none;
+  background:
+    radial-gradient(520px circle at var(--mx, 72%) var(--my, 36%), rgba(80, 120, 255, .16), transparent 60%),
+    radial-gradient(ellipse 45% 55% at 76% 40%, color-mix(in srgb, var(--glow) 30%, transparent), transparent 70%),
+    radial-gradient(ellipse 40% 45% at 6% 100%, color-mix(in srgb, #3ddc97 10%, transparent), transparent 70%);
+}
+.hero .wrap { display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: clamp(24px, 4vw, 56px); align-items: center; padding-block: clamp(36px, 5.5vw, 72px) clamp(104px, 11vw, 136px); }
+.hero .label { color: var(--night-muted); }
+.status { display: inline-flex; align-items: center; gap: 9px; padding: 6px 12px 6px 10px; border: 1px solid var(--night-line); border-radius: 999px; background: rgba(255,255,255,.03); }
+.status::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: #3ddc97; box-shadow: 0 0 0 4px rgba(61,220,151,.2); animation: pulse 2.4s ease-in-out infinite; }
+@keyframes pulse { 50% { box-shadow: 0 0 0 7px rgba(61,220,151,0); } }
+.hero h1 { font-size: clamp(2.2rem, 4.6vw, 3.8rem); font-weight: 800; margin-top: 22px; max-width: 17ch; letter-spacing: -0.035em; }
+.hero h1 em { font-style: normal; background: linear-gradient(100deg, #8fb0ff 10%, #5ee0b0 60%, #8fb0ff 100%); background-size: 200% 100%; -webkit-background-clip: text; background-clip: text; color: transparent; animation: flow 6s linear infinite; }
+@keyframes flow { to { background-position: -200% 0; } }
+.lede { max-width: 54ch; margin-top: 22px; font-size: 1.08rem; color: var(--night-muted); }
+.lede strong { color: var(--night-ink); font-weight: 600; }
+.cta { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; margin-top: 30px; }
+.hero .btn.ghost, .contact .btn.ghost { color: var(--night-ink); border-color: color-mix(in srgb, var(--night-ink) 26%, transparent); background: rgba(255,255,255,.02); }
+.micro { margin-top: 12px; font-size: 0.86rem; color: var(--night-muted); }
+.recruit { margin-top: 20px; font-size: 0.92rem; color: var(--night-muted); }
+.recruit a { color: var(--night-ink); font-weight: 600; }
+.trust { margin-top: 28px; padding-top: 18px; border-top: 1px solid var(--night-line); display: flex; flex-wrap: wrap; gap: 6px 22px; font: 400 0.78rem/1.6 var(--mono); color: var(--night-muted); }
+.trust b { color: var(--night-ink); font-weight: 600; }
+
+/* hero entrance */
+html.js .intro > * { opacity: 0; transform: translateY(18px); animation: up .9s var(--ease) forwards; }
+html.js .intro > *:nth-child(2) { animation-delay: .08s; }
+html.js .intro > *:nth-child(3) { animation-delay: .18s; }
+html.js .intro > *:nth-child(4) { animation-delay: .28s; }
+html.js .intro > *:nth-child(n+5) { animation-delay: .38s; }
+html.js .me { opacity: 0; animation: fade 1.2s .25s var(--ease) forwards; }
+@keyframes up { to { opacity: 1; transform: none; } }
+@keyframes fade { to { opacity: 1; } }
+
+/* portrait ringed by the agent pipeline */
+.me { position: relative; justify-self: end; width: min(100%, 470px); aspect-ratio: 1; }
+.me img {
+  position: absolute; left: 50%; top: 50%; width: 74%; height: auto; transform: translate(-50%, -48%);
+  filter: brightness(1.12) contrast(1.05);
+  -webkit-mask-image: radial-gradient(closest-side at 50% 46%, #000 70%, transparent 100%);
+          mask-image: radial-gradient(closest-side at 50% 46%, #000 70%, transparent 100%);
+}
+.orbit { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
+.orbit .track { fill: none; stroke: rgba(255,255,255,.16); stroke-width: .35; stroke-dasharray: .6 1.4; }
+.orbit .pulse { fill: none; stroke: url(#pg); stroke-width: .9; stroke-linecap: round; stroke-dasharray: 9 91; animation: run 5s linear infinite; filter: drop-shadow(0 0 1.4px #8fb0ff); }
+@keyframes run { from { stroke-dashoffset: 9; } to { stroke-dashoffset: -91; } }
+.node {
+  position: absolute; transform: translate(-50%, -50%); white-space: nowrap; display: inline-flex; align-items: center; gap: 6px;
+  padding: 5px 10px; border-radius: 999px; font: 600 0.68rem/1 var(--mono); letter-spacing: .02em;
+  color: var(--night-muted); background: rgba(10, 14, 22, .82); border: 1px solid rgba(255,255,255,.12); backdrop-filter: blur(6px);
+  animation: lit 5s linear infinite; animation-delay: var(--t, 0s);
+}
+.node i { font-style: normal; color: #8fb0ff; }
+.node.done { --c: 61, 220, 151; }
+.node.done i { color: #3ddc97; }
+@keyframes lit {
+  0% { color: #fff; border-color: rgba(var(--c, 143, 176, 255), .9); box-shadow: 0 0 0 4px rgba(var(--c, 47, 92, 240), .22), 0 0 26px rgba(var(--c, 47, 92, 240), .55); }
+  16%, 100% { color: var(--night-muted); border-color: rgba(255,255,255,.12); box-shadow: none; }
+}
+.orbit-cap { position: absolute; left: 50%; bottom: -6px; transform: translateX(-50%); white-space: nowrap; font: 400 0.7rem var(--mono); color: var(--night-muted); letter-spacing: .06em; }
+
+@media (max-width: 900px) {
+  .hero .wrap { grid-template-columns: 1fr; }
+  .me { justify-self: center; width: min(92%, 380px); margin-top: 10px; }
+  .node { font-size: 0.6rem; padding: 4px 8px; }
+}
+
+/* proof strip overlapping the hero */
+.proof { position: relative; z-index: 2; margin-top: -72px; }
+.evals { border: 1px solid var(--line); background: var(--surface); border-radius: 18px; overflow: hidden; box-shadow: 0 30px 60px -34px rgba(15, 27, 42, .55); }
+.evals-head { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px; padding: 12px 22px; border-bottom: 1px solid var(--line); }
+.evals-grid { display: grid; grid-template-columns: repeat(4, 1fr); }
+.ev { position: relative; padding: 22px 22px 24px; border-right: 1px solid var(--line); min-width: 0; }
+.ev:last-child { border-right: 0; }
+.ev b { display: block; font: 600 clamp(1.5rem, 2.9vw, 2.15rem)/1.1 var(--mono); font-variant-numeric: tabular-nums; letter-spacing: -0.03em; white-space: nowrap; }
+.ev > span { display: block; margin-top: 8px; font-size: 0.9rem; color: var(--muted); line-height: 1.45; }
+.ev .bar { position: absolute; left: 0; bottom: 0; height: 3px; width: 100%; background: var(--pass); transform-origin: left; transform: scaleX(0); transition: transform 1.4s var(--ease) .2s; }
+.ev .bar.miss { background: var(--miss); }
+.evals.in .ev .bar { transform: scaleX(var(--v, 1)); }
+.tag { display: inline-block; margin-top: 12px; padding: 2px 8px; border-radius: 4px; font: 600 0.68rem var(--mono); letter-spacing: 0.06em; text-transform: uppercase; }
+.tag.pass { background: var(--pass-soft); color: var(--pass); }
+.tag.miss { background: var(--miss-soft); color: var(--miss); }
+@media (max-width: 860px) { .evals-grid { grid-template-columns: 1fr 1fr; } .ev:nth-child(2) { border-right: 0; } .ev:nth-child(-n+2) { border-bottom: 1px solid var(--line); } }
+@media (max-width: 460px) { .evals-grid { grid-template-columns: 1fr; } .ev { border-right: 0; border-bottom: 1px solid var(--line); } .ev:last-child { border-bottom: 0; } }
+
+/* section heads */
+section { padding-block: clamp(64px, 9vw, 112px) 0; }
+.sec-head { display: flex; flex-wrap: wrap; align-items: end; justify-content: space-between; gap: 12px 28px; padding-bottom: 18px; border-bottom: 1px solid var(--ink); }
+.sec-head h2 { font-size: clamp(1.9rem, 4vw, 3rem); font-weight: 800; letter-spacing: -0.03em; max-width: 22ch; margin-top: 10px; }
+.sec-head > p { max-width: 44ch; color: var(--muted); font-size: 0.95rem; }
+.kicker { font: 600 0.74rem var(--mono); letter-spacing: .1em; text-transform: uppercase; color: var(--accent); }
+
+/* spotlight cards */
+.spot { position: relative; isolation: isolate; }
+.spot::before {
+  content: ""; position: absolute; inset: 0; border-radius: inherit; padding: 1px; z-index: 2; pointer-events: none;
+  background: radial-gradient(260px circle at var(--x, 50%) var(--y, 50%), var(--accent), transparent 70%);
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0); -webkit-mask-composite: xor;
+          mask: linear-gradient(#000 0 0) content-box exclude, linear-gradient(#000 0 0);
+  opacity: 0; transition: opacity .3s ease;
+}
+.spot::after { content: ""; position: absolute; inset: 0; border-radius: inherit; z-index: -1; pointer-events: none; background: radial-gradient(420px circle at var(--x, 50%) var(--y, 50%), color-mix(in srgb, var(--accent) 7%, transparent), transparent 70%); opacity: 0; transition: opacity .3s ease; }
+.spot:hover::before, .spot:hover::after { opacity: 1; }
+
+/* bento services */
+.bento { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 16px; margin-top: 30px; }
+.cell { background: var(--surface); border: 1px solid var(--line); border-radius: 20px; padding: 26px; min-width: 0; overflow: hidden; transition: transform .35s var(--ease), box-shadow .35s ease; }
+.cell:hover { transform: translateY(-3px); box-shadow: 0 26px 50px -34px rgba(15, 27, 42, .55); }
+.cell .n { font: 600 0.78rem var(--mono); color: var(--accent); }
+.cell h3 { font-size: clamp(1.3rem, 2.2vw, 1.6rem); margin-top: 10px; }
+.cell .fit { margin-top: 10px; font-size: 0.93rem; color: var(--muted); }
+.cell .fit strong { color: var(--ink); font-weight: 600; }
+.cell ul { margin-top: 16px; display: grid; gap: 8px; font-size: 0.92rem; }
+.cell li { padding-left: 24px; position: relative; }
+.cell li::before { content: ""; position: absolute; left: 2px; top: 0.42em; width: 12px; height: 7px; border-left: 2px solid var(--pass); border-bottom: 2px solid var(--pass); transform: rotate(-45deg); }
+.cell .built { margin-top: 18px; padding-top: 14px; border-top: 1px dashed var(--line); font-size: 0.86rem; color: var(--muted); }
+.cell .built a { font-weight: 600; }
+.c-ai { grid-column: span 4; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 26px; }
+.c-3d { grid-column: span 2; grid-row: span 2; display: flex; flex-direction: column; padding: 0; }
+.c-bot { grid-column: span 2; }
+.c-hire { grid-column: span 2; background: var(--night); color: var(--night-ink); border-color: var(--night-line); display: flex; flex-direction: column; justify-content: space-between; gap: 18px;
+  background-image: radial-gradient(circle at 100% 0%, color-mix(in srgb, var(--glow) 40%, transparent), transparent 60%); }
+.c-hire h3 { color: var(--night-ink); }
+.c-hire .n { color: #8fb0ff; }
+.c-hire p { color: var(--night-muted); font-size: 0.93rem; margin-top: 10px; }
+.c-hire .acts { display: flex; flex-wrap: wrap; gap: 8px; }
+.c-hire .btn { background: var(--night-ink); color: var(--night); border-color: var(--night-ink); }
+.c-hire .btn.ghost { background: transparent; color: var(--night-ink); border-color: color-mix(in srgb, var(--night-ink) 26%, transparent); }
+
+/* mini visuals inside bento */
+.viz-chat { align-self: center; display: grid; gap: 10px; padding: 16px; border-radius: 16px; background: linear-gradient(160deg, #eef5ff, #ecf8f1); border: 1px solid #dbe6f2; font-size: 0.84rem; color: #0f1b2a; }
+.viz-chat .q { justify-self: end; max-width: 85%; padding: 8px 12px; border-radius: 12px 12px 4px 12px; background: #fff; border: 1px solid #d7eadf; box-shadow: inset -3px 0 0 #2f9e6a; }
+.viz-chat .a { padding: 10px 12px; border-radius: 12px 12px 12px 4px; background: #fff; border: 1px solid #d6e3f5; box-shadow: inset 3px 0 0 #1e7be0; line-height: 1.5; }
+.viz-chat .a b { display: block; font: 700 0.72rem var(--body); margin-bottom: 3px; }
+.cite { display: inline-grid; place-items: center; min-width: 18px; height: 18px; padding: 0 4px; margin-left: 3px; border-radius: 5px; background: #e4eafb; color: #1d49c9; font: 600 0.66rem var(--mono); vertical-align: 1px; }
+.viz-chat .src { display: grid; gap: 4px; font-size: 0.72rem; color: #55637a; }
+.viz-chat .src span { display: flex; gap: 6px; align-items: baseline; }
+.viz-chat .src i { font-style: normal; font-family: var(--mono); color: #1d49c9; }
+html.js .viz-chat > * { opacity: 0; transform: translateY(8px); transition: opacity .6s var(--ease), transform .6s var(--ease); }
+html.js .in .viz-chat > * { opacity: 1; transform: none; }
+html.js .in .viz-chat > *:nth-child(2) { transition-delay: .5s; }
+html.js .in .viz-chat > *:nth-child(3) { transition-delay: .9s; }
+
+.c-3d .pic { position: relative; aspect-ratio: 4 / 3; overflow: hidden; background: #e8e6df; }
+.c-3d .pic img { width: 100%; height: 100%; object-fit: cover; object-position: 20% 70%; transform: scale(2.05); transform-origin: 26% 76%; transition: transform 1.2s var(--ease); }
+.c-3d:hover .pic img { transform: scale(2); }
+.c-3d .chips { position: absolute; left: 14px; bottom: 14px; display: flex; flex-wrap: wrap; gap: 6px; }
+.c-3d .chips span { padding: 4px 9px; border-radius: 999px; background: rgba(15, 27, 42, .78); color: #fff; font: 600 0.72rem var(--mono); backdrop-filter: blur(4px); }
+.c-3d .body { padding: 22px 26px 26px; display: flex; flex-direction: column; flex: 1; }
+.c-3d .built { margin-top: auto; }
+.c-3d .try { margin: 16px 0 18px; align-self: flex-start; }
+
+.viz-bot { margin-top: 16px; display: grid; gap: 8px; }
+.viz-bot .rem { padding: 12px 14px; border-radius: 14px; border: 1px solid var(--line); background: color-mix(in srgb, var(--accent-soft) 45%, var(--surface)); font-size: 0.86rem; }
+.viz-bot .rem b { display: block; font-family: var(--mono); font-size: 0.8rem; }
+.viz-bot .rem .acts { display: flex; gap: 6px; margin-top: 8px; }
+.viz-bot .rem .acts span { flex: 1; text-align: center; padding: 5px 0; border-radius: 8px; font-weight: 600; font-size: 0.78rem; border: 1px solid var(--line); background: var(--surface); }
+.viz-bot .rem .acts span.go { background: var(--cta); border-color: var(--cta); color: #fff; }
+
+@media (max-width: 980px) {
+  .bento { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .c-ai { grid-column: span 2; }
+  .c-3d { grid-column: span 2; grid-row: auto; }
+  .c-3d .pic { aspect-ratio: 16 / 8; }
+  .c-bot, .c-hire { grid-column: span 1; }
+}
+@media (max-width: 640px) {
+  .bento { grid-template-columns: 1fr; }
+  .c-ai { grid-template-columns: 1fr; }
+  .c-ai, .c-3d, .c-bot, .c-hire { grid-column: auto; }
+}
+
+/* 3D lab */
+.lab { margin-top: 30px; display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 4fr); border: 1px solid var(--line); border-radius: 22px; overflow: hidden; background: var(--surface); }
+.stage { position: relative; min-height: 420px; aspect-ratio: 4 / 3; background: radial-gradient(ellipse 70% 60% at 50% 42%, #faf8f3, #e7e2d8 60%, #d8d1c3 100%); cursor: grab; touch-action: pan-y; }
+.stage:active { cursor: grabbing; }
+.stage canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+.stage .fallback { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; transition: opacity .6s ease; }
+.stage.ready .fallback { opacity: 0; pointer-events: none; }
+.stage .hint { position: absolute; left: 16px; top: 16px; padding: 5px 10px; border-radius: 999px; background: rgba(15, 27, 42, .72); color: #fff; font: 600 0.7rem var(--mono); letter-spacing: .04em; opacity: 0; transition: opacity .4s ease; pointer-events: none; }
+.stage.ready .hint { opacity: 1; }
+.stage .loading { position: absolute; right: 16px; top: 16px; padding: 4px 9px; border-radius: 999px; background: rgba(255,255,255,.8); font: 400 0.7rem var(--mono); color: #6b6253; }
+.stage.ready .loading { display: none; }
+.controls { padding: 28px; display: flex; flex-direction: column; gap: 20px; border-left: 1px solid var(--line); }
+.ctl { display: grid; gap: 8px; }
+.ctl .row { display: flex; justify-content: space-between; align-items: baseline; font-weight: 600; font-size: 0.93rem; }
+.ctl output { font: 600 0.9rem var(--mono); color: var(--accent); }
+input[type="range"] { -webkit-appearance: none; appearance: none; width: 100%; height: 6px; border-radius: 999px; background: linear-gradient(90deg, var(--accent) var(--p, 50%), var(--line) var(--p, 50%)); cursor: pointer; }
+input[type="range"]::-webkit-slider-thumb { -webkit-appearance: none; width: 20px; height: 20px; border-radius: 50%; background: #fff; border: 2px solid var(--accent); box-shadow: 0 2px 6px rgba(15,27,42,.25); }
+input[type="range"]::-moz-range-thumb { width: 18px; height: 18px; border-radius: 50%; background: #fff; border: 2px solid var(--accent); }
+.readouts { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.readouts div { padding: 14px; border-radius: 14px; background: var(--paper); border: 1px solid var(--line); }
+.readouts b { display: block; margin-top: 4px; font: 600 1.5rem/1.1 var(--mono); letter-spacing: -0.02em; font-variant-numeric: tabular-nums; }
+.fine { font-size: 0.8rem; color: var(--muted); }
+.fine a { font-weight: 600; }
+@media (max-width: 900px) {
+  .lab { grid-template-columns: 1fr; }
+  .stage { min-height: 300px; }
+  .controls { border-left: 0; border-top: 1px solid var(--line); }
+}
+
+/* product bands */
+.bands { margin-top: 30px; }
+.band { background: linear-gradient(165deg, var(--b1), var(--b2)); border-top: 1px solid color-mix(in srgb, var(--tint) 14%, transparent); }
+.band:last-child { border-bottom: 1px solid color-mix(in srgb, var(--tint) 14%, transparent); }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .band { background: linear-gradient(165deg, color-mix(in srgb, var(--tint) 14%, var(--paper)), var(--paper)); } }
+:root[data-theme="dark"] .band { background: linear-gradient(165deg, color-mix(in srgb, var(--tint) 14%, var(--paper)), var(--paper)); }
+.case { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 6fr); gap: clamp(28px, 4.5vw, 64px); padding-block: clamp(56px, 7vw, 88px); }
+.case > div { min-width: 0; }
+.band.flip .shots { order: -1; }
+.case .label { color: color-mix(in srgb, var(--tint) 70%, var(--muted)); }
+.case h3 { font-size: clamp(1.7rem, 3.2vw, 2.4rem); font-weight: 800; letter-spacing: -0.03em; margin-top: 10px; }
+.case .one { margin-top: 14px; font-size: 1.05rem; }
+.outcome { margin-top: 18px; padding: 14px 16px; border-left: 3px solid var(--pass); background: color-mix(in srgb, var(--surface) 70%, transparent); border-radius: 0 12px 12px 0; font-size: 0.95rem; }
+.outcome .label { color: var(--pass); display: block; margin-bottom: 4px; }
+.meta { display: grid; grid-template-columns: auto 1fr; gap: 6px 16px; margin-top: 20px; font-size: 0.9rem; }
+.meta dt { font: 600 0.72rem/1.9 var(--mono); letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
+.meta dd { margin: 0; min-width: 0; }
+.did { margin-top: 20px; display: grid; gap: 10px; font-size: 0.95rem; }
+.did li { padding-left: 18px; position: relative; }
+.did li::before { content: ""; position: absolute; left: 0; top: 0.72em; width: 8px; height: 1.5px; background: var(--tint); }
+.links { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 18px; margin-top: 22px; font-weight: 600; font-size: 0.93rem; }
+.links a { color: var(--tint); }
+.note { color: var(--muted); font-weight: 400; }
+
+.shots { min-width: 0; align-self: start; position: sticky; top: 88px; }
+.device { position: relative; transform: perspective(1400px) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg)); transition: transform .5s var(--ease); }
+.screen { padding: 2.2% 2.2% 2.8%; border-radius: 16px 16px 6px 6px; background: #0c0f14; border: 1px solid #262c36; box-shadow: 0 40px 70px -36px rgba(15, 27, 42, .7); }
+.screen img { width: 100%; height: auto; aspect-ratio: 16 / 10; object-fit: cover; object-position: top; border-radius: 6px; background: #fff; transition: opacity .2s ease; }
+.base { position: relative; height: 14px; margin: 0 -5.5%; border-radius: 0 0 16px 16px; background: linear-gradient(#e3e6eb, #b4bac3); box-shadow: 0 18px 30px -18px rgba(15, 27, 42, .6); }
+.base::before { content: ""; position: absolute; left: 50%; top: 0; width: 15%; height: 5px; transform: translateX(-50%); border-radius: 0 0 8px 8px; background: #a1a8b2; }
+.phone { position: absolute; right: -4%; bottom: -8%; width: 23%; padding: 5px; border-radius: 22px; background: #0c0f14; border: 1px solid #262c36; box-shadow: 0 30px 50px -20px rgba(15, 27, 42, .7); }
+.phone img { width: 100%; height: auto; aspect-ratio: 780 / 1688; object-fit: cover; border-radius: 17px; }
+.thumbs { display: flex; gap: 8px; margin-top: 30px; }
+.thumbs button { flex: 1; min-width: 0; padding: 0; border: 1px solid var(--line); border-radius: 8px; overflow: hidden; background: none; cursor: pointer; opacity: .55; transition: opacity .2s ease, transform .2s var(--ease); }
+.thumbs button:hover { opacity: .9; transform: translateY(-2px); }
+.thumbs button[aria-pressed="true"] { opacity: 1; border-color: var(--tint); box-shadow: 0 0 0 1px var(--tint); }
+.thumbs img { width: 100%; aspect-ratio: 16 / 10; object-fit: cover; object-position: top; }
+.cap { margin-top: 10px; font-size: 0.85rem; color: var(--muted); min-height: 2.8em; }
+
+details.evaltable { margin-top: 20px; border: 1px solid var(--line); border-radius: 12px; background: var(--surface); }
+details.evaltable summary { cursor: pointer; padding: 11px 14px; font-weight: 600; font-size: 0.92rem; list-style: none; display: flex; justify-content: space-between; gap: 10px; }
+details.evaltable summary::-webkit-details-marker { display: none; }
+details.evaltable summary::after { content: "+"; font: 600 1.1rem/1 var(--mono); color: var(--muted); }
+details.evaltable[open] summary::after { content: "–"; }
+.table-wrap { overflow-x: auto; border-top: 1px solid var(--line); }
+table { border-collapse: collapse; width: 100%; font-size: 0.86rem; }
+th, td { text-align: left; padding: 8px 12px; border-bottom: 1px solid var(--line); vertical-align: top; }
+tr:last-child td { border-bottom: 0; }
+th { font: 600 0.7rem var(--mono); letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
+td.num { font: 400 0.84rem var(--mono); font-variant-numeric: tabular-nums; white-space: nowrap; }
+td .tag { margin: 0; }
+details.evaltable .cap { padding: 0 14px 12px; margin-top: 8px; min-height: 0; }
+
+@media (max-width: 900px) {
+  .case { grid-template-columns: 1fr; }
+  .case .shots, .band.flip .shots { order: -1; position: static; }
+  .phone { width: 22%; right: -2%; }
+}
+
+.after-case { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px 20px; padding-top: 32px; }
+.after-case p { font: 700 clamp(1.2rem, 2.2vw, 1.5rem) var(--display); letter-spacing: -0.02em; }
+
+/* tech marquee */
+.marquee { margin-top: clamp(64px, 9vw, 104px); padding-block: 22px; border-block: 1px solid var(--line); overflow: hidden; display: grid; gap: 12px;
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 10%, #000 90%, transparent); mask-image: linear-gradient(90deg, transparent, #000 10%, #000 90%, transparent); }
+.mq { display: flex; width: max-content; gap: 12px; animation: mq 48s linear infinite; }
+.mq.rev { animation-direction: reverse; animation-duration: 56s; }
+.marquee:hover .mq { animation-play-state: paused; }
+.mq span { display: inline-flex; align-items: center; gap: 10px; padding: 9px 16px; border: 1px solid var(--line); border-radius: 999px; background: var(--surface); font: 600 0.86rem var(--mono); white-space: nowrap; }
+.mq span::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: var(--c, var(--accent)); }
+@keyframes mq { to { transform: translateX(calc(-50% - 6px)); } }
+
+/* process */
+.steps { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); margin-top: 32px; counter-reset: s; }
+.step { position: relative; padding: 0 22px 0 0; min-width: 0; }
+.step::before { counter-increment: s; content: "0" counter(s); display: grid; place-items: center; width: 48px; height: 48px; border-radius: 50%; background: var(--ink); color: var(--paper); font: 600 0.88rem var(--mono); position: relative; z-index: 1; box-shadow: 0 0 0 6px var(--paper); }
+.step::after { content: ""; position: absolute; top: 23px; left: 48px; right: 0; height: 2px; background: linear-gradient(90deg, var(--accent), color-mix(in srgb, var(--accent) 20%, var(--line))); transform-origin: left; transform: scaleX(0); transition: transform .9s var(--ease); transition-delay: calc(var(--i) * .25s + .2s); }
+.steps.in .step::after { transform: scaleX(1); }
+.step:last-child::after { display: none; }
+.step h3 { font-size: 1.15rem; margin-top: 18px; }
+.step p { margin-top: 8px; font-size: 0.92rem; color: var(--muted); }
+@media (max-width: 860px) {
+  .steps { grid-template-columns: 1fr; gap: 26px; }
+  .step { display: grid; grid-template-columns: 48px 1fr; gap: 0 16px; padding: 0; }
+  .step::before { grid-row: span 2; }
+  .step::after { top: 48px; bottom: -26px; left: 23px; right: auto; width: 2px; height: auto; transform-origin: top; transform: scaleY(0); }
+  .steps.in .step::after { transform: scaleY(1); }
+  .step h3 { margin-top: 12px; }
+}
+
+/* more projects */
+.more { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; margin-top: 30px; }
+.more article { padding: 24px; border: 1px solid var(--line); border-radius: 18px; background: var(--surface); min-width: 0; }
+.more h3 { font-size: 1.2rem; }
+.more p { margin-top: 8px; font-size: 0.95rem; color: var(--muted); }
+.stack { margin-top: 12px; font: 400 0.76rem/1.6 var(--mono); color: var(--muted); }
+.more a { font-weight: 600; font-size: 0.9rem; display: inline-block; margin-top: 10px; }
+@media (max-width: 720px) { .more { grid-template-columns: 1fr; } }
+
+/* timeline */
+.rows { display: grid; }
+.row { display: grid; grid-template-columns: 170px minmax(0, 1fr); gap: 8px 28px; padding-block: 24px; border-bottom: 1px solid var(--line); }
+.row time { font: 400 0.82rem/1.9 var(--mono); color: var(--muted); }
+.row h3 { font-size: 1.15rem; }
+.row .org { color: var(--muted); font-size: 0.95rem; margin-top: 2px; }
+.row ul { margin-top: 10px; display: grid; gap: 6px; font-size: 0.95rem; }
+.row li { padding-left: 18px; position: relative; }
+.row li::before { content: ""; position: absolute; left: 0; top: 0.72em; width: 8px; height: 1.5px; background: var(--accent); }
+@media (max-width: 640px) { .row { grid-template-columns: 1fr; } }
+
+/* skills */
+.skills { display: grid; grid-template-columns: 170px minmax(0, 1fr); gap: 0 28px; }
+.skills dt, .skills dd { padding-block: 14px; border-bottom: 1px solid var(--line); margin: 0; }
+.skills dt { font: 600 0.72rem/2.2 var(--mono); letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
+@media (max-width: 640px) { .skills { grid-template-columns: 1fr; } .skills dt { border-bottom: 0; padding-bottom: 0; } }
+
+/* faq */
+.faq { margin-top: 12px; }
+.faq details { border-bottom: 1px solid var(--line); }
+.faq summary { cursor: pointer; list-style: none; display: flex; justify-content: space-between; align-items: center; gap: 16px; padding: 20px 0; font: 600 1.06rem var(--body); }
+.faq summary::-webkit-details-marker { display: none; }
+.faq summary::after { content: "+"; flex: none; display: grid; place-items: center; width: 30px; height: 30px; border-radius: 50%; border: 1px solid var(--line); font: 400 1rem/1 var(--mono); color: var(--muted); transition: transform .25s var(--ease), background .2s ease; }
+.faq details[open] summary::after { transform: rotate(45deg); background: var(--accent-soft); }
+.faq .a { padding: 0 46px 22px 0; color: var(--muted); max-width: 72ch; }
+.faq .a a { font-weight: 600; }
+
+/* contact */
+.contact { margin-top: clamp(72px, 10vw, 120px); background: var(--night); color: var(--night-ink); position: relative; overflow: hidden; isolation: isolate; }
+.contact::before { content: ""; position: absolute; inset: 0; z-index: -1;
+  background-image: linear-gradient(rgba(255,255,255,.045) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.045) 1px, transparent 1px); background-size: 56px 56px;
+  -webkit-mask-image: radial-gradient(ellipse 60% 80% at 85% 10%, #000 20%, transparent 75%); mask-image: radial-gradient(ellipse 60% 80% at 85% 10%, #000 20%, transparent 75%); }
+.contact::after { content: ""; position: absolute; inset: 0; z-index: -1; background: radial-gradient(ellipse 55% 75% at 100% 0%, color-mix(in srgb, var(--glow) 32%, transparent), transparent 70%); }
+.contact .wrap { padding-block: clamp(60px, 9vw, 110px) 28px; }
+.contact .label { color: var(--night-muted); }
+.contact h2 { font-size: clamp(2.3rem, 6.4vw, 5rem); max-width: 14ch; margin-top: 14px; font-weight: 800; letter-spacing: -0.04em; }
+.contact h2 em { font-style: normal; background: linear-gradient(100deg, #8fb0ff, #5ee0b0); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.contact .sub { margin-top: 18px; max-width: 54ch; color: var(--night-muted); font-size: 1.06rem; }
+.contact .cta { margin-top: 32px; }
+.contact .micro { margin-top: 12px; }
+.alt { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 14px; margin-top: 36px; padding-top: 22px; border-top: 1px solid var(--night-line); font-size: 0.92rem; color: var(--night-muted); }
+.alt code { font: 600 0.95rem var(--mono); color: var(--night-ink); user-select: all; overflow-wrap: anywhere; }
+.alt button, .alt a { font: 600 0.85rem var(--body); color: var(--night-ink); background: transparent; border: 1px solid color-mix(in srgb, var(--night-ink) 24%, transparent); border-radius: 8px; padding: 6px 11px; cursor: pointer; text-decoration: none; }
+.foot { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px 24px; margin-top: 44px; padding-top: 18px; border-top: 1px solid var(--night-line); font-size: 0.82rem; color: var(--night-muted); }
+
+/* floating zalo */
+.fab {
+  position: fixed; right: max(16px, env(safe-area-inset-right, 0px)); bottom: max(16px, env(safe-area-inset-bottom, 0px)); z-index: 40;
+  display: inline-flex; align-items: center; gap: 8px; padding: 12px 18px 12px 14px; border-radius: 999px;
+  background: var(--cta); color: #fff; text-decoration: none; font: 600 0.95rem var(--body);
+  box-shadow: 0 14px 30px -10px rgba(29, 92, 245, .7);
+  opacity: 0; transform: translateY(16px) scale(.96); pointer-events: none; transition: opacity .25s ease, transform .25s ease;
+}
+.fab.show { opacity: 1; transform: none; pointer-events: auto; }
+.fab svg { width: 20px; height: 20px; }
+
+/* Reduced motion: drop movement (slides, marquee, tilt, shine), keep fades, glows and count-ups. */
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  html.js .rv, html.js .viz-chat > * { transform: none !important; }
+  html.js .intro > * { transform: none; animation-name: fade; }
+  .btn.zalo::after, .hero h1 em { animation: none; }
+  .btn:hover, .cell:hover, .thumbs button:hover { transform: none; }
+  .device { transform: none !important; }
+  .mq { animation: none; flex-wrap: wrap; width: auto; padding-inline: 20px; }
+  .mq[aria-hidden="true"] { display: none; }
+}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="wrap">
+    <a class="brand" href="#top"><i>N</i>Phạm Long Nhật</a>
+    <nav class="nav" aria-label="Sections">
+      <a href="#services"><span data-l="vi">Dịch vụ</span><span data-l="en">Services</span></a>
+      <a href="#lab"><span data-l="vi">Thử 3D</span><span data-l="en">3D demo</span></a>
+      <a href="#work"><span data-l="vi">Dự án</span><span data-l="en">Work</span></a>
+      <a href="#process"><span data-l="vi">Quy trình</span><span data-l="en">Process</span></a>
+      <a href="#faq">FAQ</a>
+      <div class="langs" role="group" aria-label="Language">
+        <button type="button" data-set-lang="vi" aria-pressed="false">VI</button>
+        <button type="button" data-set-lang="en" aria-pressed="true">EN</button>
+      </div>
+      <a class="btn zalo" href="https://zalo.me/0347081078" target="_blank" rel="noopener">Zalo<span class="long" data-l="vi">cho mình</span><span class="long" data-l="en">me</span></a>
+    </nav>
+  </div>
+</header>
+
+<main id="top">
+  <div class="hero" id="hero">
+    <div class="wrap">
+      <div class="intro">
+        <p class="label status"><span data-l="vi">Đang nhận dự án · Hà Nội · Mở cho vị trí full-time</span><span data-l="en">Taking projects · Hanoi · Open to full-time roles</span></p>
+        <h1>
+          <span data-l="vi">Chatbot AI và website 3D <em>chạy thật</em>, có số liệu chứng minh.</span>
+          <span data-l="en">AI chatbots and 3D websites that <em>actually ship</em>, with the numbers to prove it.</span>
+        </h1>
+        <p class="lede" data-l="vi">Mình là Nhật, AI engineer. Mình làm <strong>trợ lý AI trả lời từ tài liệu của bạn</strong>, <strong>website bán hàng có thiết kế 3D</strong> và <strong>bot tự động hóa</strong>.</p>
+        <p class="lede" data-l="en">I'm Nhat, an AI engineer. I build <strong>AI assistants that answer from your documents</strong>, <strong>online stores with a 3D product designer</strong> and <strong>automation bots</strong>.</p>
+        <div>
+          <div class="cta">
+            <a class="btn zalo big" href="https://zalo.me/0347081078" target="_blank" rel="noopener">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12a8 8 0 0 1-11.6 7.1L4 20l1-4.6A8 8 0 1 1 21 12z"/></svg>
+              <span data-l="vi">Nhắn Zalo cho mình</span><span data-l="en">Message me on Zalo</span>
+            </a>
+            <a class="btn ghost big" href="#work"><span data-l="vi">Xem dự án đã làm</span><span data-l="en">See the work</span></a>
+          </div>
+          <p class="micro"><span data-l="vi">0347 081 078 · Trao đổi ý tưởng miễn phí, không ràng buộc.</span><span data-l="en">+84 347 081 078 · The first chat is free, no commitment.</span></p>
+          <p class="recruit"><span data-l="vi">Bạn là nhà tuyển dụng?</span><span data-l="en">Hiring?</span> <a href="assets/CV_PhamLongNhat.pdf" target="_blank" rel="noopener"><span data-l="vi">Tải CV (PDF) →</span><span data-l="en">Download my CV (PDF) →</span></a></p>
+        </div>
+        <div class="trust">
+          <span><b>Vingroup Applied AI Talent Program</b> · VinUni</span>
+          <span><span data-l="vi">Đang thực tập Data Engineer tại</span><span data-l="en">Data Engineer intern at</span> <b>Vin Smart Future</b></span>
+          <span><span data-l="vi">Thực tập:</span><span data-l="en">Interned at:</span> <b>Playable Labs</b>, <b>ISCP</b></span>
+          <span><b>PTIT</b> · <span data-l="vi">CNTT</span><span data-l="en">B.Sc. IT</span></span>
+        </div>
+      </div>
+
+      <div class="me">
+        <svg class="orbit" viewBox="0 0 100 100" aria-hidden="true">
+          <defs><linearGradient id="pg" x1="0" x2="1"><stop offset="0" stop-color="#8fb0ff"/><stop offset="1" stop-color="#5ee0b0"/></linearGradient></defs>
+          <path class="track" d="M17.47 17.47 A46 46 0 1 0 82.53 17.47" pathLength="100"/>
+          <path class="pulse" d="M17.47 17.47 A46 46 0 1 0 82.53 17.47" pathLength="100"/>
+        </svg>
+        <img src="assets/img/nhat.jpg" alt="Phạm Long Nhật" width="757" height="810">
+        <span class="node" style="left:17.5%;top:17.5%;--t:0s"><i>01</i>Guardrail</span>
+        <span class="node" style="left:4%;top:50%;--t:.83s"><i>02</i>Scope check</span>
+        <span class="node" style="left:17.5%;top:82.5%;--t:1.67s"><i>03</i>Retrieve · grade</span>
+        <span class="node" style="left:82.5%;top:82.5%;--t:3.33s"><i>04</i>Generate</span>
+        <span class="node" style="left:96%;top:50%;--t:4.17s"><i>05</i>Citation check</span>
+        <span class="node done" style="left:82.5%;top:17.5%;--t:4.9s"><i>✓</i><span data-l="vi">Trả lời có nguồn</span><span data-l="en">Cited answer</span></span>
+        <p class="orbit-cap"><span data-l="vi">Pipeline agent của GlucoCare</span><span data-l="en">GlucoCare agent pipeline</span></p>
+      </div>
+    </div>
+  </div>
+
+  <div class="wrap proof">
+    <div class="evals rv" aria-label="Measured results from GlucoCare">
+      <div class="evals-head">
+        <span class="label"><span data-l="vi">Báo cáo eval GlucoCare · 10/2026</span><span data-l="en">GlucoCare eval report · Oct 2026</span></span>
+        <span class="label"><span data-l="vi">Chấm bởi model của một nhà cung cấp khác</span><span data-l="en">Judged by a model from a different provider</span></span>
+      </div>
+      <div class="evals-grid">
+        <div class="ev"><b><span data-to="24">24</span>/24</b><span data-l="vi">yêu cầu nguy hiểm (đổi liều, chẩn đoán, prompt injection) được xử lý an toàn</span><span data-l="en">dangerous requests (dose changes, diagnosis, prompt injection) handled safely end to end</span><span class="tag pass"><span data-l="vi">Mục tiêu 100% · đạt</span><span data-l="en">Target 100% · pass</span></span><i class="bar"></i></div>
+        <div class="ev"><b>0.94–<span data-to="0.97" data-dec="2">0.97</span></b><span data-l="vi">độ bám nguồn qua 3 lần chạy, 94–96% trích dẫn đúng</span><span data-l="en">groundedness across 3 runs, with 94–96% correct citations</span><span class="tag pass"><span data-l="vi">Mục tiêu ≥ 0.80 · đạt</span><span data-l="en">Target ≥ 0.80 · pass</span></span><i class="bar" style="--v:.97"></i></div>
+        <div class="ev"><b>17.6 → <span data-from="17.6" data-to="14.5" data-dec="1">14.5</span>%</b><span data-l="vi">tỉ lệ lỗi nhận dạng giọng nói tiếng Việt sau khi chọn lại model STT</span><span data-l="en">word error rate on Vietnamese voice queries after picking a new STT model</span><span class="tag pass"><span data-l="vi">So sánh 6 model</span><span data-l="en">6 models compared</span></span><i class="bar" style="--v:.82"></i></div>
+        <div class="ev"><b><span data-to="10.8" data-dec="1">10.8</span> s</b><span data-l="vi">thời gian phản hồi p90 trên 177 lượt. Trung vị 3.1 s, phần đuôi vẫn chậm.</span><span data-l="en">p90 response time over 177 turns. Median is 3.1 s, the tail is still too slow.</span><span class="tag miss"><span data-l="vi">Mục tiêu &lt; 8 s · chưa đạt</span><span data-l="en">Target &lt; 8 s · miss</span></span><i class="bar miss" style="--v:.74"></i></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- services -->
+  <section id="services">
+    <div class="wrap">
+      <div class="sec-head rv">
+        <div>
+          <p class="kicker"><span data-scramble data-l="vi">01 / Dịch vụ</span><span data-scramble data-l="en">01 / Services</span></p>
+          <h2><span data-l="vi">Mình có thể làm gì cho bạn</span><span data-l="en">What I can build for you</span></h2>
+        </div>
+        <p><span data-l="vi">Mỗi dịch vụ dưới đây đều đã có sản phẩm chạy thật để bạn mở ra xem.</span><span data-l="en">Each service below has a running product you can open and try.</span></p>
+      </div>
+
+      <div class="bento">
+        <article class="cell c-ai spot rv">
+          <div>
+            <span class="n">01</span>
+            <h3><span data-l="vi">Trợ lý AI trả lời từ tài liệu của bạn</span><span data-l="en">An AI assistant that answers from your documents</span></h3>
+            <p class="fit"><strong data-l="vi">Hợp khi:</strong><strong data-l="en">For when:</strong> <span data-l="vi">khách hỏi đi hỏi lại cùng câu, hoặc nhân viên mất thời gian tra tài liệu.</span><span data-l="en">customers ask the same questions again and again, or staff lose time searching documents.</span></p>
+            <ul>
+              <li data-l="vi">Trả lời có trích nguồn, không bịa</li><li data-l="en">Answers with citations, no made-up facts</li>
+              <li data-l="vi">Chặn câu hỏi ngoài phạm vi hoặc nguy hiểm</li><li data-l="en">Blocks off-topic or risky questions</li>
+              <li data-l="vi">Bộ test đo độ chính xác trước khi bàn giao</li><li data-l="en">A test set that measures accuracy before hand-off</li>
+              <li data-l="vi">Theo dõi từng hội thoại để cải thiện dần</li><li data-l="en">Every conversation traced, so it keeps improving</li>
+            </ul>
+            <p class="built"><span data-l="vi">Đã làm:</span><span data-l="en">Built:</span> <a href="#glucocare">GlucoCare →</a></p>
+          </div>
+          <div class="viz-chat" aria-hidden="true">
+            <div class="q">Nên đo đường huyết vào lúc nào?</div>
+            <div class="a"><b>GlucoCare</b>Khi bạn bị ốm, hãy đo đường huyết mỗi 2–4 giờ, ngay cả vào ban đêm…<span class="cite">1</span><span class="cite">2</span><span class="cite">3</span></div>
+            <div class="src">
+              <span><i>1</i>BV Đại học Y Dược TP.HCM · Ngày ốm an toàn</span>
+              <span><i>2</i>BV Đại học Y Dược TP.HCM · Du lịch an toàn</span>
+              <span><i>3</i>HCDC TP.HCM · Kiểm soát tại nhà</span>
+            </div>
+          </div>
+        </article>
+
+        <article class="cell c-3d spot rv" style="--d:.1s">
+          <div class="pic">
+            <img src="assets/img/tv-3d.jpg" alt="" loading="lazy">
+            <div class="chips"><span>100 × 50 cm</span><span>≈ 148 L</span><span>≈ 515 kg</span></div>
+          </div>
+          <div class="body">
+            <span class="n">02</span>
+            <h3><span data-l="vi">Website bán hàng có thiết kế 3D</span><span data-l="en">An online store with a 3D product designer</span></h3>
+            <p class="fit"><strong data-l="vi">Hợp khi:</strong><strong data-l="en">For when:</strong> <span data-l="vi">sản phẩm làm theo yêu cầu và khách cần thấy trước khi đặt.</span><span data-l="en">products are made to order and buyers need to see them before they buy.</span></p>
+            <ul>
+              <li data-l="vi">Khách tự chỉnh kích thước, màu, hoa văn trên 3D</li><li data-l="en">Buyers change size, colour and pattern in 3D</li>
+              <li data-l="vi">Giá và thông số tự tính, không phải nhắn hỏi</li><li data-l="en">Price and specs computed live</li>
+              <li data-l="vi">Đặt hàng không cần tài khoản, có trang quản trị</li><li data-l="en">Guest checkout plus an admin area</li>
+            </ul>
+            <a class="btn ghost try" href="#lab"><span data-l="vi">Thử ngay bản 3D ↓</span><span data-l="en">Try the 3D demo ↓</span></a>
+            <p class="built"><span data-l="vi">Đã làm:</span><span data-l="en">Built:</span> <a href="#thachvan">Thạch Vân →</a> · <a href="#webin3d">PY webin3D →</a></p>
+          </div>
+        </article>
+
+        <article class="cell c-bot spot rv" style="--d:.15s">
+          <span class="n">03</span>
+          <h3><span data-l="vi">Bot và tự động hóa</span><span data-l="en">Bots and automation</span></h3>
+          <p class="fit"><span data-l="vi">Đọc ảnh đơn thuốc, hóa đơn thành dữ liệu, nhắc lịch, báo cáo định kỳ. Người dùng xác nhận trước khi lưu.</span><span data-l="en">Turns photos of prescriptions or receipts into data, sends reminders and reports. The user confirms before anything is saved.</span></p>
+          <div class="viz-bot" aria-hidden="true">
+            <div class="rem"><b>08:00 · Metformin 500mg</b><div class="acts"><span class="go"><span data-l="vi">Đã uống</span><span data-l="en">Taken</span></span><span><span data-l="vi">Bỏ liều</span><span data-l="en">Skip</span></span></div></div>
+          </div>
+          <p class="built"><span data-l="vi">Đã làm:</span><span data-l="en">Built:</span> <a href="#more"><span data-l="vi">Bot nhắc thuốc Telegram →</span><span data-l="en">Telegram medication bot →</span></a></p>
+        </article>
+
+        <article class="cell c-hire rv" style="--d:.2s">
+          <div>
+            <span class="n">04</span>
+            <h3><span data-l="vi">Công ty đang tuyển AI engineer?</span><span data-l="en">Hiring an AI engineer?</span></h3>
+            <p><span data-l="vi">Mình đang tìm vị trí full-time về LLM agent, RAG và evaluation, và có thể demo code GlucoCare qua cuộc gọi.</span><span data-l="en">I'm looking for a full-time role in LLM agents, RAG and evaluation, and can walk through the GlucoCare code on a call.</span></p>
+          </div>
+          <div class="acts">
+            <a class="btn" href="assets/CV_PhamLongNhat.pdf" target="_blank" rel="noopener"><span data-l="vi">Tải CV</span><span data-l="en">Download CV</span></a>
+            <a class="btn ghost" href="#experience"><span data-l="vi">Kinh nghiệm</span><span data-l="en">Experience</span></a>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3D lab -->
+  <section id="lab">
+    <div class="wrap">
+      <div class="sec-head rv">
+        <div>
+          <p class="kicker"><span data-scramble data-l="vi">02 / Thử ngay</span><span data-scramble data-l="en">02 / Live demo</span></p>
+          <h2><span data-l="vi">Kéo thử: bồn đá dựng từ số đo</span><span data-l="en">Play with it: a stone basin built from measurements</span></h2>
+        </div>
+        <p><span data-l="vi">Đổi kích thước, mô hình 3D vẽ lại và thể tích, khối lượng tính lại ngay. Cùng cách mình làm trình thiết kế cho Thạch Vân.</span><span data-l="en">Change the size and the 3D model redraws while volume and weight update. Same idea as the designer I built for Thạch Vân.</span></p>
+      </div>
+      <div class="lab rv">
+        <div class="stage" id="stage">
+          <img class="fallback" src="assets/img/tv-3d.jpg" alt="Thạch Vân 3D designer showing a round stone basin" loading="lazy">
+          <canvas id="basin" aria-label="Interactive 3D stone basin"></canvas>
+          <span class="hint"><span data-l="vi">Kéo để xoay</span><span data-l="en">Drag to rotate</span></span>
+          <span class="loading"><span data-l="vi">Đang tải 3D…</span><span data-l="en">Loading 3D…</span></span>
+        </div>
+        <div class="controls">
+          <label class="ctl"><span class="row"><span><span data-l="vi">Đường kính</span><span data-l="en">Diameter</span></span><output id="oD">100 cm</output></span><input type="range" id="iD" min="60" max="140" step="5" value="100"></label>
+          <label class="ctl"><span class="row"><span><span data-l="vi">Chiều cao</span><span data-l="en">Height</span></span><output id="oH">50 cm</output></span><input type="range" id="iH" min="30" max="70" step="5" value="50"></label>
+          <label class="ctl"><span class="row"><span><span data-l="vi">Đường chạm khắc</span><span data-l="en">Carved bands</span></span><output id="oR">2</output></span><input type="range" id="iR" min="0" max="4" step="1" value="2"></label>
+          <div class="readouts">
+            <div><span class="label"><span data-l="vi">Nước</span><span data-l="en">Water</span></span><b id="vW">≈ 0 L</b></div>
+            <div><span class="label"><span data-l="vi">Đá</span><span data-l="en">Stone</span></span><b id="vS">≈ 0 kg</b></div>
+          </div>
+          <p class="fine"><span data-l="vi">Công thức rút gọn để minh họa (đá 2.6 t/m³, nước đầy 85%), không phải báo giá. Bản đầy đủ có hoa văn và giá:</span><span data-l="en">Simplified formula for the demo (stone 2.6 t/m³, water at 85% full), not a quote. The full version with patterns and prices:</span> <a href="https://thachvan.duckdns.org/thiet-ke-rieng" target="_blank" rel="noopener">thachvan.duckdns.org ↗</a></p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- work -->
+  <section id="work">
+    <div class="wrap">
+      <div class="sec-head rv">
+        <div>
+          <p class="kicker"><span data-scramble data-l="vi">03 / Dự án</span><span data-scramble data-l="en">03 / Selected work</span></p>
+          <h2><span data-l="vi">3 sản phẩm chạy thật</span><span data-l="en">Three products, all running</span></h2>
+        </div>
+        <p><span data-l="vi">Làm trong 2026. Ảnh chụp từ app đang chạy, dùng dữ liệu demo.</span><span data-l="en">Built in 2026. Screenshots come from the live apps, using demo data.</span></p>
+      </div>
+    </div>
+
+    <div class="bands">
+      <!-- GlucoCare -->
+      <article class="band" id="glucocare" style="--b1:#e8f2fd;--b2:#e8f6ef;--tint:#1e6fd0">
+        <div class="wrap case">
+          <div class="rv">
+            <p class="label"><span data-l="vi">AI trong y tế · Nhóm 4 người · 9–10/2026</span><span data-l="en">AI in healthcare · Team of 4 · Sep – Oct 2026</span></p>
+            <h3><span data-l="vi">GlucoCare, trợ lý AI cho người bệnh tiểu đường type 2</span><span data-l="en">GlucoCare, an AI assistant for type 2 diabetes care</span></h3>
+            <p class="one" data-l="vi">Bệnh nhân ghi đường huyết bằng form, câu nói, giọng nói hoặc ảnh máy đo, và hỏi bằng tiếng Việt. Bác sĩ nhận cảnh báo cho đúng bệnh nhân của mình.</p>
+            <p class="one" data-l="en">Patients log glucose by form, sentence, voice or meter photo and ask questions in Vietnamese. Doctors see alerts for the patients linked to them.</p>
+            <p class="outcome"><span class="label"><span data-l="vi">Kết quả</span><span data-l="en">Outcome</span></span><span data-l="vi">Câu trả lời chỉ hiện khi có nguồn tin cậy. 24/24 câu hỏi nguy hiểm bị chặn, 39/39 triệu chứng cấp cứu được chuyển thẳng tới hướng dẫn đi cấp cứu.</span><span data-l="en">Answers only appear when a trusted source backs them. 24/24 dangerous requests blocked, 39/39 red-flag symptoms routed straight to emergency advice.</span></p>
+            <dl class="meta">
+              <dt><span data-l="vi">Vai trò</span><span data-l="en">Role</span></dt><dd><span data-l="vi">Phụ trách AI / agent: LangGraph agent, RAG, guardrails, evaluation</span><span data-l="en">AI / agent owner: LangGraph agent, RAG, guardrails, evaluation</span></dd>
+              <dt>Stack</dt><dd>Python, FastAPI, LangGraph, Gemini, ChromaDB, LangSmith, Next.js 16, PostgreSQL</dd>
+              <dt><span data-l="vi">Nguyên tắc</span><span data-l="en">Rule</span></dt><dd><span data-l="vi">Rule engine phân loại đường huyết và bật cảnh báo. LLM chỉ đọc ảnh và viết câu trả lời có trích dẫn, không bao giờ đặt mức cảnh báo hay đổi liều.</span><span data-l="en">A rule engine classifies glucose and raises alerts. The LLM only reads images and words cited answers. It never sets an alert level or changes a dose.</span></dd>
+            </dl>
+            <ul class="did">
+              <li data-l="vi">Xây agent graph: guardrail đầu vào → kiểm tra phạm vi → truy xuất và chấm điểm → sinh câu trả lời → kiểm tra trích dẫn.</li>
+              <li data-l="en">Built the agent graph: input guardrail → semantic scope check → retrieve and grade → generate → citation check.</li>
+              <li data-l="vi">Xây kho tri thức từ 27 nguồn y khoa đã duyệt (213 đoạn). Chỉ trả lời khi có nguồn hỗ trợ.</li>
+              <li data-l="en">Built the knowledge base from 27 reviewed medical sources (213 chunks). An answer is shown only when a source supports it.</li>
+              <li data-l="vi">Thêm bộ phát hiện triệu chứng cấp cứu, bỏ qua LLM và khuyên bệnh nhân đi cấp cứu ngay.</li>
+              <li data-l="en">Added a red-flag symptom detector that skips the LLM and tells the patient to seek emergency care.</li>
+              <li data-l="vi">So sánh 6 model speech-to-text trên câu hỏi giọng nói tiếng Việt thật: WER, nhận đúng tên thuốc, độ trễ, chi phí.</li>
+              <li data-l="en">Benchmarked 6 speech-to-text models on real Vietnamese voice queries for WER, drug-name recall, latency and cost.</li>
+            </ul>
+            <details class="evaltable">
+              <summary><span data-l="vi">Bảng eval đầy đủ, gồm cả mục chưa đạt</span><span data-l="en">Full eval table, misses included</span></summary>
+              <div class="table-wrap">
+                <table>
+                  <thead><tr><th><span data-l="vi">Hạng mục</span><span data-l="en">Area</span></th><th><span data-l="vi">Kết quả</span><span data-l="en">Result</span></th><th><span data-l="vi">Mục tiêu</span><span data-l="en">Target</span></th><th></th></tr></thead>
+                  <tbody>
+                    <tr><td><span data-l="vi">Yêu cầu nguy hiểm</span><span data-l="en">Dangerous requests</span></td><td class="num">24/24</td><td class="num">100%</td><td><span class="tag pass">pass</span></td></tr>
+                    <tr><td><span data-l="vi">Triệu chứng cấp cứu</span><span data-l="en">Red-flag symptoms</span></td><td class="num">39/39</td><td class="num">100%</td><td><span class="tag pass">pass</span></td></tr>
+                    <tr><td><span data-l="vi">Trả lời bám nguồn</span><span data-l="en">Answers from sources</span></td><td class="num">0.94–0.97</td><td class="num">≥ 0.80</td><td><span class="tag pass">pass</span></td></tr>
+                    <tr><td><span data-l="vi">Thống kê bệnh nhân</span><span data-l="en">Patient statistics</span></td><td class="num">14/14</td><td class="num">100%</td><td><span class="tag pass">pass</span></td></tr>
+                    <tr><td><span data-l="vi">Đọc ảnh máy đo</span><span data-l="en">Meter photo reading</span></td><td class="num">20/21</td><td class="num">≥ 80%</td><td><span class="tag pass">pass</span></td></tr>
+                    <tr><td><span data-l="vi">Hội thoại nhiều lượt</span><span data-l="en">Multi-turn chats</span></td><td class="num">21 → 26 / 28</td><td class="num">n/a</td><td><span class="tag pass"><span data-l="vi">cải thiện</span><span data-l="en">improved</span></span></td></tr>
+                    <tr><td><span data-l="vi">Nhập đường huyết bằng câu chữ</span><span data-l="en">Free-text glucose entry</span></td><td class="num">27/40 (68%)</td><td class="num">≥ 90%</td><td><span class="tag miss">miss</span></td></tr>
+                    <tr><td><span data-l="vi">Thời gian phản hồi p90</span><span data-l="en">Response time p90</span></td><td class="num">10.8 s</td><td class="num">&lt; 8 s</td><td><span class="tag miss">miss</span></td></tr>
+                  </tbody>
+                </table>
+              </div>
+              <p class="cap" data-l="vi">Giới hạn ghi trong báo cáo: chưa có bác sĩ duyệt checklist, điểm do model chấm chỉ là ước lượng. Ở mục nhập bằng câu chữ, 12/13 lần trượt là parser hỏi lại bệnh nhân để xác nhận; chỉ 1/40 bị lưu sai mà không hỏi.</p>
+              <p class="cap" data-l="en">Limits stated in the report: no doctor has reviewed the checklist yet, and judge-model scores are estimates. On free-text entry, 12 of the 13 misses are the parser asking the patient to confirm. Only 1 of 40 was saved wrong without asking.</p>
+            </details>
+            <div class="links">
+              <a href="https://c4-app-p147.duckdns.org" target="_blank" rel="noopener"><span data-l="vi">Mở app ↗</span><span data-l="en">Live app ↗</span></a>
+              <span class="note"><span data-l="vi">Mã nguồn nằm trong repo riêng của chương trình, mình có thể demo qua cuộc gọi.</span><span data-l="en">Source is in a private program repo. I can walk through it on a call.</span></span>
+            </div>
+          </div>
+          <div class="shots rv" style="--d:.1s" data-gallery>
+            <div class="device" data-tilt>
+              <div class="screen"><img src="assets/img/gc-chat.jpg" alt="GlucoCare chat answering when to check blood glucose, with three cited sources" width="1440" height="900"></div>
+              <div class="base"></div>
+            </div>
+            <div class="thumbs">
+              <button type="button" aria-pressed="true" data-src="assets/img/gc-chat.jpg" data-cap-vi="Câu trả lời kèm 3 nguồn y khoa tiếng Việt, mở được từng nguồn, có nút đọc to." data-cap-en="An answer backed by 3 Vietnamese medical sources, each one linked, with a read-aloud button."><img src="assets/img/gc-chat.jpg" alt="Chat" loading="lazy"></button>
+              <button type="button" aria-pressed="false" data-src="assets/img/gc-dashboard.jpg" data-cap-vi="Trang chủ bệnh nhân: số đo gần nhất và trạng thái, lời nhắc ghi chỉ số, lời dặn của bác sĩ." data-cap-en="The patient home leads with the latest reading and its status, then a nudge to log today and the doctor's note."><img src="assets/img/gc-dashboard.jpg" alt="Patient dashboard" loading="lazy"></button>
+              <button type="button" aria-pressed="false" data-src="assets/img/gc-doctor.jpg" data-cap-vi="Bác sĩ thấy bệnh nhân của mình, xếp theo cảnh báo khẩn và chưa xem." data-cap-en="Doctors see linked patients sorted by urgent and unread alerts."><img src="assets/img/gc-doctor.jpg" alt="Doctor patient list" loading="lazy"></button>
+              <button type="button" aria-pressed="false" data-src="assets/img/gc-patient2.jpg" data-cap-vi="Cảnh báo do rule engine tạo, kèm số đo và lý do." data-cap-en="Alerts come from the rule engine, with the reading and the reason attached."><img src="assets/img/gc-patient2.jpg" alt="Patient alerts" loading="lazy"></button>
+            </div>
+            <p class="cap" data-cap-out></p>
+          </div>
+        </div>
+      </article>
+
+      <!-- Thach Van -->
+      <article class="band flip" id="thachvan" style="--b1:#f3eee6;--b2:#ebe5da;--tint:#8a6436">
+        <div class="wrap case">
+          <div class="rv">
+            <p class="label"><span data-l="vi">Thương mại điện tử + 3D · Làm một mình · 9–10/2026</span><span data-l="en">E-commerce + 3D · Solo build · Sep – Oct 2026</span></p>
+            <h3><span data-l="vi">Thạch Vân, cửa hàng bồn cá đá chạm tay</span><span data-l="en">Thạch Vân, a store for hand-carved stone fish basins</span></h3>
+            <p class="one" data-l="vi">Website thương hiệu nơi khách tự thiết kế bồn trên 3D, thấy dung tích nước và khối lượng đá thay đổi ngay, rồi đặt hàng không cần tạo tài khoản.</p>
+            <p class="one" data-l="en">A brand site where a buyer designs a basin in 3D, sees its water volume and stone weight change live, then orders without creating an account.</p>
+            <p class="outcome"><span class="label"><span data-l="vi">Kết quả</span><span data-l="en">Outcome</span></span><span data-l="vi">Khách xem giá công khai và thử thiết kế trước khi liên hệ, nên chủ shop không phải trả lời từng tin nhắn hỏi giá.</span><span data-l="en">Buyers see prices and try a design before they get in touch, so the owner no longer answers a message for every price.</span></p>
+            <dl class="meta">
+              <dt><span data-l="vi">Vai trò</span><span data-l="en">Role</span></dt><dd><span data-l="vi">Toàn bộ: đặc tả, kiến trúc, frontend, dữ liệu, deploy</span><span data-l="en">Everything: specs, architecture decisions, frontend, data, deploy</span></dd>
+              <dt>Stack</dt><dd>React 19, Vite, TypeScript, three.js, GSAP, Supabase (Auth, Postgres, RLS, Storage), AWS Amplify</dd>
+              <dt><span data-l="vi">Vấn đề</span><span data-l="en">Problem</span></dt><dd><span data-l="vi">Bồn đá đắt và làm theo đơn. Khách cần tin tay nghề trước khi gọi, và không ai muốn nhắn hỏi giá từng mẫu.</span><span data-l="en">Stone basins are expensive and made to order. Buyers need to trust the craft before they call, and nobody wants to message a seller for every price.</span></dd>
+            </dl>
+            <ul class="did">
+              <li data-l="vi">Mô hình 3D dựng từ số đo, không dùng file model. Đổi đường kính hay chiều cao là bồn vẽ lại ngay.</li>
+              <li data-l="en">The 3D preview is built from measurements, not model files. Changing diameter or height redraws the basin at once.</li>
+              <li data-l="vi">Hoa văn chạm khắc lấy từ bản vẽ nét đen chuyển thành normal map, nên thêm mẫu mới chỉ cần một bản vẽ.</li>
+              <li data-l="en">Carved patterns come from black line drawings converted to normal maps, so a new pattern is one new drawing.</li>
+              <li data-l="vi">three.js chỉ tải ở trang thiết kế (khoảng 155 KB gzip). Trang công khai được prerender ra HTML tĩnh cho SEO.</li>
+              <li data-l="en">three.js loads only on the design page (about 155 KB gzip). Public pages are prerendered to static HTML for SEO.</li>
+              <li data-l="vi">Đặt hàng không cần tài khoản, tra cứu đơn, email đơn hàng, trang quản trị sản phẩm, đơn và tin tức.</li>
+              <li data-l="en">Guest checkout, order lookup, order emails and an admin area for products, orders and news.</li>
+            </ul>
+            <div class="links">
+              <a href="https://thachvan.duckdns.org" target="_blank" rel="noopener"><span data-l="vi">Mở website ↗</span><span data-l="en">Live site ↗</span></a>
+              <a href="https://thachvan.duckdns.org/thiet-ke-rieng" target="_blank" rel="noopener"><span data-l="vi">Thử trình thiết kế 3D ↗</span><span data-l="en">Try the 3D designer ↗</span></a>
+            </div>
+          </div>
+          <div class="shots rv" style="--d:.1s" data-gallery>
+            <div class="device" data-tilt>
+              <div class="screen"><img src="assets/img/tv-3d.jpg" alt="Thạch Vân 3D designer showing a round stone basin, 148 litres and 515 kg" width="1440" height="900" loading="lazy"></div>
+              <div class="base"></div>
+              <div class="phone"><img src="assets/img/tv-mobile.jpg" alt="Thạch Vân on a phone" width="780" height="1688" loading="lazy"></div>
+            </div>
+            <div class="thumbs">
+              <button type="button" aria-pressed="true" data-src="assets/img/tv-3d.jpg" data-cap-vi="Bồn tròn 100 × 50 cm: khoảng 148 lít nước và 515 kg đá, tính ngay khi kéo." data-cap-en="A 100 × 50 cm round basin: about 148 litres of water and 515 kg of stone, computed as you drag."><img src="assets/img/tv-3d.jpg" alt="3D designer" loading="lazy"></button>
+              <button type="button" aria-pressed="false" data-src="assets/img/tv-home.jpg" data-cap-vi="Trang chủ mở đầu bằng hình người thợ đang chạm đá." data-cap-en="The home page opens on the artisan at work."><img src="assets/img/tv-home.jpg" alt="Home page" loading="lazy"></button>
+              <button type="button" aria-pressed="false" data-src="assets/img/tv-shop.jpg" data-cap-vi="Bộ sưu tập hiện giá rõ ràng, khách không phải hỏi." data-cap-en="The collection, with prices shown so buyers don't have to ask."><img src="assets/img/tv-shop.jpg" alt="Collection" loading="lazy"></button>
+            </div>
+            <p class="cap" data-cap-out></p>
+          </div>
+        </div>
+      </article>
+
+      <!-- webin3D -->
+      <article class="band" id="webin3d" style="--b1:#e6f4f1;--b2:#eef3e6;--tint:#0f7f73">
+        <div class="wrap case">
+          <div class="rv">
+            <p class="label"><span data-l="vi">3D configurator + chatbot LLM · Làm một mình · 9–10/2026</span><span data-l="en">3D configurator + LLM chatbot · Solo build · Sep – Oct 2026</span></p>
+            <h3><span data-l="vi">PY webin3D, tự thiết kế sản phẩm in 3D ngay trên trình duyệt</span><span data-l="en">PY webin3D, customise a 3D-printed product in the browser</span></h3>
+            <p class="one" data-l="vi">Khách chọn mẫu, đổi màu từng phần, thêm tên hoặc logo, xem trước 3D và lưu thiết kế để chia sẻ. Chatbot Gemini trả lời câu hỏi về sản phẩm.</p>
+            <p class="one" data-l="en">A customer picks a model, recolours each part, adds a name or logo, previews it in 3D and saves a shareable design. A Gemini chatbot answers product questions.</p>
+            <p class="outcome"><span class="label"><span data-l="vi">Kết quả</span><span data-l="en">Outcome</span></span><span data-l="vi">Thiết kế của khách đi thẳng thành file in đúng kích thước, vì bản xem trước và file in đọc cùng một dữ liệu tính bằng milimét.</span><span data-l="en">A customer's design goes straight to a print-ready file, because the preview and the print file read the same data in millimetres.</span></p>
+            <dl class="meta">
+              <dt><span data-l="vi">Vai trò</span><span data-l="en">Role</span></dt><dd><span data-l="vi">Toàn bộ: thiết kế dữ liệu, UI 3D, backend, chatbot, deploy</span><span data-l="en">Everything: design contracts, 3D UI, backend, chatbot, deploy</span></dd>
+              <dt>Stack</dt><dd>Next.js, React Three Fiber, zustand, zod, Better Auth, PostgreSQL, Gemini, LangSmith, Docker, Caddy</dd>
+            </dl>
+            <ul class="did">
+              <li data-l="vi">Xử lý logo trong Web Worker: giảm màu bằng k-means trong không gian Lab, khớp với màu nhựa thật bằng CIEDE2000, vector hóa và kiểm tra nét mảnh có in được không.</li>
+              <li data-l="en">Logo pipeline in a Web Worker: k-means colour reduction in Lab space, CIEDE2000 matching to real filament colours, vectorising, and a thin-stroke check for printability.</li>
+              <li data-l="vi">Chatbot gọi tool, tự chuyển model dự phòng khi Gemini quá tải, giới hạn token theo ngày, câu chào trả lời sẵn để không tốn phí.</li>
+              <li data-l="en">Chatbot with tool calls, a model fallback chain when Gemini is overloaded, a daily token budget, and canned replies for greetings so they cost nothing.</li>
+              <li data-l="vi">Mỗi lượt chat được trace trong LangSmith. Admin xem các chat bị chấm "không hài lòng" để biết kho tri thức còn thiếu gì.</li>
+              <li data-l="en">Every chat turn is traced in LangSmith. Admins review thumbs-down chats to see what the knowledge base is missing.</li>
+              <li data-l="vi">Hơn 300 test unit và end-to-end (Vitest, Playwright). Deploy lên một VPS bằng Docker Compose, HTTPS tự động.</li>
+              <li data-l="en">300+ unit and end-to-end tests (Vitest, Playwright). Deploys to one VPS with Docker Compose and automatic HTTPS.</li>
+            </ul>
+            <div class="links">
+              <span class="note"><span data-l="vi">Repo riêng, chưa công khai. Demo khi bạn cần.</span><span data-l="en">Private repo, not public yet. Demo on request.</span></span>
+            </div>
+          </div>
+          <div class="shots rv" style="--d:.1s" data-gallery>
+            <div class="device" data-tilt>
+              <div class="screen"><img src="assets/img/w3-home.jpg" alt="PY webin3D home page with a 3D mouse shell and filament colour swatches" width="1440" height="900" loading="lazy"></div>
+              <div class="base"></div>
+            </div>
+            <div class="thumbs">
+              <button type="button" aria-pressed="true" data-src="assets/img/w3-home.jpg" data-cap-vi="Trang chủ có mô hình 3D chạy thật với màu nhựa thật." data-cap-en="The home page shows a live 3D model with real filament colours."><img src="assets/img/w3-home.jpg" alt="Home" loading="lazy"></button>
+              <button type="button" aria-pressed="false" data-src="assets/img/w3-design.jpg" data-cap-vi="Trình thiết kế đếm số màu nhựa đang dùng so với giới hạn của máy in." data-cap-en="The designer tracks how many filament colours the design uses against what the printer allows."><img src="assets/img/w3-design.jpg" alt="Designer" loading="lazy"></button>
+              <button type="button" aria-pressed="false" data-src="assets/img/w3-explore.jpg" data-cap-vi="Thư viện mẫu, mỗi thẻ ghi giới hạn kích thước và màu." data-cap-en="The template gallery, with size and colour limits on each card."><img src="assets/img/w3-explore.jpg" alt="Explore templates" loading="lazy"></button>
+            </div>
+            <p class="cap" data-cap-out></p>
+          </div>
+        </div>
+      </article>
+    </div>
+
+    <div class="wrap">
+      <div class="after-case rv">
+        <p><span data-l="vi">Bạn có sản phẩm tương tự muốn làm?</span><span data-l="en">Want something like this for your business?</span></p>
+        <a class="btn zalo big" href="https://zalo.me/0347081078" target="_blank" rel="noopener"><span data-l="vi">Kể mình nghe qua Zalo</span><span data-l="en">Tell me on Zalo</span></a>
+      </div>
+    </div>
+  </section>
+
+  <div class="marquee" aria-label="Tech I use">
+    <div class="mq">
+      <span style="--c:#1e6fd0">LangGraph</span><span style="--c:#2f9e6a">RAG + citations</span><span style="--c:#b4470f">Guardrails</span><span>LangSmith</span><span style="--c:#1e6fd0">Gemini</span><span style="--c:#c7743a">Claude</span><span style="--c:#2f9e6a">ChromaDB</span><span>pgvector</span><span style="--c:#0f7f73">FastAPI</span>
+      <span style="--c:#1e6fd0">LangGraph</span><span style="--c:#2f9e6a">RAG + citations</span><span style="--c:#b4470f">Guardrails</span><span>LangSmith</span><span style="--c:#1e6fd0">Gemini</span><span style="--c:#c7743a">Claude</span><span style="--c:#2f9e6a">ChromaDB</span><span>pgvector</span><span style="--c:#0f7f73">FastAPI</span>
+    </div>
+    <div class="mq rev" aria-hidden="true">
+      <span style="--c:#8a6436">three.js</span><span style="--c:#0f7f73">React Three Fiber</span><span>Next.js</span><span style="--c:#1e6fd0">React 19</span><span style="--c:#2f9e6a">Supabase</span><span>PostgreSQL</span><span style="--c:#1e6fd0">Docker</span><span style="--c:#2f9e6a">Playwright</span><span style="--c:#8a6436">GSAP</span>
+      <span style="--c:#8a6436">three.js</span><span style="--c:#0f7f73">React Three Fiber</span><span>Next.js</span><span style="--c:#1e6fd0">React 19</span><span style="--c:#2f9e6a">Supabase</span><span>PostgreSQL</span><span style="--c:#1e6fd0">Docker</span><span style="--c:#2f9e6a">Playwright</span><span style="--c:#8a6436">GSAP</span>
+    </div>
+  </div>
+
+  <section id="process">
+    <div class="wrap">
+      <div class="sec-head rv">
+        <div>
+          <p class="kicker"><span data-scramble data-l="vi">04 / Quy trình</span><span data-scramble data-l="en">04 / Process</span></p>
+          <h2><span data-l="vi">Làm việc với mình thế nào</span><span data-l="en">How working together goes</span></h2>
+        </div>
+        <p><span data-l="vi">Bạn thấy sản phẩm chạy thật từ sớm, không phải chờ đến cuối.</span><span data-l="en">You see the product running early, not at the very end.</span></p>
+      </div>
+      <ol class="steps rv">
+        <li class="step" style="--i:0">
+          <h3><span data-l="vi">Nhắn Zalo</span><span data-l="en">Message on Zalo</span></h3>
+          <p><span data-l="vi">Bạn kể vấn đề hoặc ý tưởng. Mình hỏi lại vài câu để hiểu đúng việc cần làm.</span><span data-l="en">You describe the problem or idea. I ask a few questions to get the job right.</span></p>
+        </li>
+        <li class="step" style="--i:1">
+          <h3><span data-l="vi">Đề xuất và báo giá</span><span data-l="en">Proposal and quote</span></h3>
+          <p><span data-l="vi">Phạm vi, các mốc và chi phí ghi rõ bằng văn bản trước khi bắt đầu.</span><span data-l="en">Scope, milestones and cost in writing before any work starts.</span></p>
+        </li>
+        <li class="step" style="--i:2">
+          <h3><span data-l="vi">Làm theo mốc</span><span data-l="en">Build in milestones</span></h3>
+          <p><span data-l="vi">Sau mỗi mốc bạn nhận link chạy thật để dùng thử và góp ý.</span><span data-l="en">After each milestone you get a live link to try and comment on.</span></p>
+        </li>
+        <li class="step" style="--i:3">
+          <h3><span data-l="vi">Bàn giao</span><span data-l="en">Hand-off</span></h3>
+          <p><span data-l="vi">Deploy lên máy chủ, giao mã nguồn, tài liệu và hướng dẫn sử dụng.</span><span data-l="en">Deployed to a server, with the source code, docs and a walkthrough.</span></p>
+        </li>
+      </ol>
+    </div>
+  </section>
+
+  <section id="more">
+    <div class="wrap">
+      <div class="sec-head rv">
+        <div>
+          <p class="kicker"><span data-scramble data-l="vi">05 / Dự án khác</span><span data-scramble data-l="en">05 / More projects</span></p>
+          <h2><span data-l="vi">Các sản phẩm nhỏ hơn</span><span data-l="en">Smaller builds</span></h2>
+        </div>
+      </div>
+      <div class="more">
+        <article class="spot rv">
+          <h3><span data-l="vi">Bot Telegram nhắc uống thuốc</span><span data-l="en">Telegram medication reminder bot</span></h3>
+          <p data-l="vi">Đọc ảnh đơn thuốc bằng Claude vision, cho người dùng xác nhận hoặc sửa thuốc đã trích, đặt lịch nhắc uống và báo cáo mức tuân thủ 7 hoặc 30 ngày.</p>
+          <p data-l="en">Reads a prescription photo with Claude vision, lets the user confirm or edit the extracted medicines, schedules dose reminders and reports adherence over 7 or 30 days.</p>
+          <p class="stack">Python · SQLAlchemy · Alembic · APScheduler · pytest</p>
+          <a href="https://github.com/Nhatcony0902/tele-bot" target="_blank" rel="noopener"><span data-l="vi">Mã nguồn trên GitHub ↗</span><span data-l="en">Code on GitHub ↗</span></a>
+        </article>
+        <article class="spot rv" style="--d:.08s">
+          <h3>Flash Ticket System</h3>
+          <p data-l="vi">Nền tảng bán vé sự kiện theo kiến trúc microservices, làm theo nhóm. Mình xây RAG agent giúp người mua tìm và hỏi về sự kiện bằng ngôn ngữ tự nhiên.</p>
+          <p data-l="en">Team-built event ticketing platform on microservices. I built the RAG agent that lets buyers search and ask about events in plain language.</p>
+          <p class="stack">LangChain4j · Gemini · pgvector · Spring Boot · Kafka · Redis · Keycloak</p>
+          <a href="https://github.com/levanminh04/flash-ticket-system" target="_blank" rel="noopener"><span data-l="vi">Mã nguồn trên GitHub ↗</span><span data-l="en">Code on GitHub ↗</span></a>
+        </article>
+        <article class="spot rv">
+          <h3><span data-l="vi">Dashboard luật kết hợp cho doanh số pizza</span><span data-l="en">Pizza sales association rules dashboard</span></h3>
+          <p data-l="vi">Tìm các cặp món hay được mua cùng nhau ở 3 cấp (pizza, tên, nguyên liệu), có trọng số thời gian để đơn gần đây được tính nặng hơn.</p>
+          <p data-l="en">Mines cross-selling patterns from sales transactions at three levels (pizza, name, ingredient), with time decay so recent orders count more.</p>
+          <p class="stack">Python · pandas · mlxtend · Streamlit · Plotly · MySQL</p>
+          <a href="https://github.com/hoanpvpv/Mining" target="_blank" rel="noopener"><span data-l="vi">Mã nguồn trên GitHub ↗</span><span data-l="en">Code on GitHub ↗</span></a>
+        </article>
+        <article class="spot rv" style="--d:.08s">
+          <h3><span data-l="vi">Lãi Thật, công cụ tính lãi cho người bán trên sàn</span><span data-l="en">Lãi Thật, a profit calculator for marketplace sellers</span></h3>
+          <p data-l="vi">Tính lãi thật của từng đơn trên Shopee và TikTok Shop theo biểu phí 2026, dưới dạng web tĩnh và file Excel 300 dòng.</p>
+          <p data-l="en">Works out the real profit per order on Shopee and TikTok Shop under the 2026 fee tables, as a static web tool and a 300-row Excel workbook.</p>
+          <p class="stack">JavaScript · Node test runner · Python (Excel build)</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section id="experience">
+    <div class="wrap">
+      <div class="sec-head rv">
+        <div>
+          <p class="kicker"><span data-scramble data-l="vi">06 / Kinh nghiệm</span><span data-scramble data-l="en">06 / Experience</span></p>
+          <h2><span data-l="vi">Kinh nghiệm và học vấn</span><span data-l="en">Experience and education</span></h2>
+        </div>
+        <p>2024 – 2026</p>
+      </div>
+      <div class="rows">
+        <div class="row rv">
+          <time><span data-l="vi">10 – 12/2026</span><span data-l="en">Oct – Dec 2026</span></time>
+          <div>
+            <h3>Data Engineer Intern</h3>
+            <p class="org">Vin Smart Future</p>
+            <ul>
+              <li data-l="vi">Phân loại cảm xúc (sentiment) và chủ đề (topic) trong phản hồi của khách hàng về hãng xe VinFast.</li>
+              <li data-l="en">Sentiment and topic classification of customer feedback about VinFast cars.</li>
+              <li data-l="vi">Ước tính thu nhập của khách hàng (income estimation) dựa trên hành vi chi tiêu trong hệ sinh thái Vin.</li>
+              <li data-l="en">Income estimation from customers' spending behaviour across the Vin ecosystem.</li>
+            </ul>
+          </div>
+        </div>
+        <div class="row rv">
+          <time><span data-l="vi">9/2026 – nay</span><span data-l="en">Sep 2026 – now</span></time>
+          <div>
+            <h3>Vingroup Applied AI Talent Program</h3>
+            <p class="org">VinUniversity · Cohort 4</p>
+            <ul>
+              <li data-l="vi">Lab về RAG (dense + BM25 + RRF), hệ multi-agent (MCP, A2A), guardrails và red-teaming, đánh giá AI, giám sát LLMOps, model serving và CI/CD cho AI.</li>
+              <li data-l="en">Labs on RAG (dense + BM25 + RRF), multi-agent systems (MCP, A2A), guardrails and red-teaming, AI evaluation, LLMOps monitoring, model serving and CI/CD for AI.</li>
+              <li data-l="vi">Giai đoạn build: GlucoCare, phụ trách AI / agent trong nhóm 4 người.</li>
+              <li data-l="en">Build phase: GlucoCare, as AI / agent owner in a team of 4.</li>
+            </ul>
+          </div>
+        </div>
+        <div class="row rv">
+          <time><span data-l="vi">6 – 9/2026</span><span data-l="en">Jun – Sep 2026</span></time>
+          <div>
+            <h3>Web Developer Intern</h3>
+            <p class="org">Playable Labs · The One Game Studio, <span data-l="vi">Hà Nội</span><span data-l="en">Hanoi</span></p>
+            <ul>
+              <li data-l="vi">Nghiên cứu và làm prototype chatbot LLM cho nền tảng quảng cáo playable B2B: so sánh model về chất lượng, độ trễ và chi phí, viết bộ test prompt, bàn giao demo chạy được.</li>
+              <li data-l="en">Researched and prototyped an LLM chatbot for a B2B playable-ads platform: benchmarked models on answer quality, latency and cost, wrote a prompt test set, delivered a working demo.</li>
+              <li data-l="vi">Sửa lỗi và ra mắt tính năng frontend, backend cùng đội sản phẩm và thiết kế.</li>
+              <li data-l="en">Fixed and shipped front-end and back-end features with the product and design teams.</li>
+            </ul>
+          </div>
+        </div>
+        <div class="row rv">
+          <time><span data-l="vi">12/2024 – 2/2025</span><span data-l="en">Dec 2024 – Feb 2025</span></time>
+          <div>
+            <h3>Backend Developer Intern</h3>
+            <p class="org">ISCP, <span data-l="vi">Hà Nội</span><span data-l="en">Hanoi</span> · ASP.NET Core</p>
+            <ul>
+              <li data-l="vi">Xây xác thực JWT phân quyền (Admin, Manager, Staff) và API cho hệ thống quản lý tài sản nội bộ, từ mua sắm đến thanh lý.</li>
+              <li data-l="en">Built JWT authentication with role-based access (Admin, Manager, Staff) and the APIs of an internal asset management system, from procurement to disposal.</li>
+              <li data-l="vi">Làm việc qua GitLab merge request và code review.</li>
+              <li data-l="en">Worked through GitLab merge requests and code review.</li>
+            </ul>
+          </div>
+        </div>
+        <div class="row rv">
+          <time><span data-l="vi">Dự kiến 2027</span><span data-l="en">Expected 2027</span></time>
+          <div>
+            <h3><span data-l="vi">Cử nhân Công nghệ Thông tin</span><span data-l="en">B.Sc. in Information Technology</span></h3>
+            <p class="org"><span data-l="vi">Học viện Công nghệ Bưu chính Viễn thông (PTIT), Hà Nội</span><span data-l="en">Posts and Telecommunications Institute of Technology (PTIT), Hanoi</span></p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="skills">
+    <div class="wrap">
+      <div class="sec-head rv">
+        <div>
+          <p class="kicker"><span data-scramble data-l="vi">07 / Kỹ năng</span><span data-scramble data-l="en">07 / Skills</span></p>
+          <h2><span data-l="vi">Đều đã dùng trong dự án</span><span data-l="en">All used in real projects</span></h2>
+        </div>
+      </div>
+      <dl class="skills rv">
+        <dt>AI / LLM</dt><dd>LangGraph, LangChain, LangChain4j, RAG (hybrid retrieval, citations), agents &amp; tool calling, MCP / A2A, guardrails, LLM &amp; speech-to-text evaluation, LangSmith; Gemini, OpenAI, Claude APIs</dd>
+        <dt><span data-l="vi">Vector &amp; dữ liệu</span><span data-l="en">Vector and data</span></dt><dd>ChromaDB, pgvector, embeddings, pandas, data pipelines</dd>
+        <dt><span data-l="vi">Ngôn ngữ</span><span data-l="en">Languages</span></dt><dd>Python, TypeScript, Java, C#</dd>
+        <dt>Frameworks</dt><dd>FastAPI, Next.js, React, three.js / React Three Fiber, Spring Boot, ASP.NET Core, Node.js</dd>
+        <dt><span data-l="vi">Cơ sở dữ liệu</span><span data-l="en">Data stores</span></dt><dd>PostgreSQL, SQLite, SQL Server, MongoDB, Redis</dd>
+        <dt><span data-l="vi">Triển khai</span><span data-l="en">Delivery</span></dt><dd>Docker, GitHub Actions, AWS Amplify, Caddy, Kafka, RabbitMQ; pytest, Vitest, Playwright</dd>
+        <dt><span data-l="vi">Ngoại ngữ</span><span data-l="en">Spoken</span></dt><dd><span data-l="vi">Tiếng Việt (bản ngữ), tiếng Anh (trung cấp, TOEIC 635)</span><span data-l="en">Vietnamese (native), English (intermediate, TOEIC 635)</span></dd>
+      </dl>
+    </div>
+  </section>
+
+  <section id="faq">
+    <div class="wrap">
+      <div class="sec-head rv">
+        <div>
+          <p class="kicker"><span data-scramble data-l="vi">08 / FAQ</span><span data-scramble data-l="en">08 / FAQ</span></p>
+          <h2><span data-l="vi">Câu hỏi thường gặp</span><span data-l="en">Questions people ask</span></h2>
+        </div>
+      </div>
+      <div class="faq rv">
+        <details>
+          <summary><span data-l="vi">Chi phí khoảng bao nhiêu?</span><span data-l="en">How much does it cost?</span></summary>
+          <div class="a"><p data-l="vi">Tùy phạm vi. Sau khi trao đổi qua Zalo, mình gửi báo giá chia theo từng mốc, nên bạn biết mỗi khoản trả cho việc gì.</p><p data-l="en">It depends on scope. After we talk on Zalo, I send a quote split by milestone, so you know what each payment covers.</p></div>
+        </details>
+        <details>
+          <summary><span data-l="vi">Làm mất bao lâu?</span><span data-l="en">How long does it take?</span></summary>
+          <div class="a"><p data-l="vi">Mốc thời gian cụ thể nằm trong báo giá. Để tham khảo: Thạch Vân và PY webin3D là hai sản phẩm đầy đủ, mỗi cái mình làm một mình trong khoảng 2 tháng.</p><p data-l="en">The exact timeline is in the quote. For reference, Thạch Vân and PY webin3D are both full products, each built solo in about two months.</p></div>
+        </details>
+        <details>
+          <summary><span data-l="vi">Mình có nhận mã nguồn không?</span><span data-l="en">Do I get the source code?</span></summary>
+          <div class="a"><p data-l="vi">Có. Khi bàn giao bạn nhận mã nguồn, tài khoản quản trị và tài liệu hướng dẫn.</p><p data-l="en">Yes. At hand-off you get the source code, the admin accounts and the docs.</p></div>
+        </details>
+        <details>
+          <summary><span data-l="vi">Chatbot có trả lời sai hay bịa không?</span><span data-l="en">Will the chatbot make things up?</span></summary>
+          <div class="a"><p data-l="vi">Mình thiết kế để chatbot chỉ trả lời khi tài liệu của bạn có thông tin, có trích nguồn, và đo bằng bộ test trước khi bàn giao. Ở GlucoCare, độ bám nguồn đạt 0.94–0.97. Không hệ thống nào đúng 100%, nên mình báo cả những chỗ chưa đạt.</p><p data-l="en">I build it to answer only when your documents contain the answer, with citations, and I measure it with a test set before hand-off. GlucoCare scored 0.94–0.97 on groundedness. No system is right 100% of the time, so I report the misses too.</p></div>
+        </details>
+        <details>
+          <summary><span data-l="vi">Bạn có nhận việc full-time không?</span><span data-l="en">Are you open to a full-time role?</span></summary>
+          <div class="a"><p data-l="vi">Có, mình đang tìm vị trí AI engineer. <a href="assets/CV_PhamLongNhat.pdf" target="_blank" rel="noopener">Tải CV tại đây</a>.</p><p data-l="en">Yes, I'm looking for an AI engineering role. <a href="assets/CV_PhamLongNhat.pdf" target="_blank" rel="noopener">Download my CV</a>.</p></div>
+        </details>
+        <details>
+          <summary><span data-l="vi">Có làm việc bằng tiếng Anh được không?</span><span data-l="en">Can we work in English?</span></summary>
+          <div class="a"><p data-l="vi">Được. Tài liệu và trao đổi bằng văn bản tiếng Anh không vấn đề gì.</p><p data-l="en">Yes. Written English for docs and messages works fine.</p></div>
+        </details>
+      </div>
+    </div>
+  </section>
+
+  <div class="contact" id="contact">
+    <div class="wrap">
+      <p class="label"><span data-l="vi">Liên hệ</span><span data-l="en">Contact</span></p>
+      <h2><span data-l="vi">Kể mình nghe bạn muốn <em>làm gì</em>.</span><span data-l="en">Tell me what you want to <em>build</em>.</span></h2>
+      <p class="sub"><span data-l="vi">Một tin nhắn Zalo là đủ để bắt đầu. Mình sẽ hỏi lại vài câu rồi gửi hướng làm và báo giá.</span><span data-l="en">One Zalo message is enough to start. I'll ask a few questions, then send an approach and a quote.</span></p>
+      <div class="cta">
+        <a class="btn zalo big" href="https://zalo.me/0347081078" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12a8 8 0 0 1-11.6 7.1L4 20l1-4.6A8 8 0 1 1 21 12z"/></svg>
+          <span data-l="vi">Nhắn Zalo · 0347 081 078</span><span data-l="en">Zalo · +84 347 081 078</span>
+        </a>
+        <a class="btn ghost big" href="tel:+84347081078"><span data-l="vi">Gọi điện</span><span data-l="en">Call</span></a>
+      </div>
+      <p class="micro"><span data-l="vi">Trao đổi ý tưởng miễn phí, không ràng buộc.</span><span data-l="en">The first chat is free, no commitment.</span></p>
+      <div class="alt">
+        <span><span data-l="vi">Hoặc email:</span><span data-l="en">Or email:</span></span>
+        <code id="email">nhatcony0902@gmail.com</code>
+        <button type="button" id="copy"><span data-l="vi">Sao chép</span><span data-l="en">Copy</span></button>
+        <a href="https://github.com/Nhatcony0902" target="_blank" rel="noopener">GitHub</a>
+        <a href="assets/CV_PhamLongNhat.pdf" target="_blank" rel="noopener">CV (PDF)</a>
+      </div>
+      <div class="foot">
+        <span>Phạm Long Nhật · <span data-l="vi">Hà Nội, Việt Nam</span><span data-l="en">Hanoi, Vietnam</span></span>
+        <span><span data-l="vi">Ảnh chụp từ app đang chạy, dùng dữ liệu demo.</span><span data-l="en">Screenshots are from the running apps, using demo data.</span></span>
+      </div>
+    </div>
+  </div>
+</main>
+
+<a class="fab" id="fab" href="https://zalo.me/0347081078" target="_blank" rel="noopener" aria-label="Zalo">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12a8 8 0 0 1-11.6 7.1L4 20l1-4.6A8 8 0 1 1 21 12z"/></svg>
+  <span data-l="vi">Nhắn Zalo</span><span data-l="en">Zalo me</span>
+</a>
+
+<script>
+(function () {
+  var root = document.documentElement;
+  var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var fine = window.matchMedia && window.matchMedia('(pointer: fine)').matches;
+  var titles = { vi: 'Phạm Long Nhật · AI Engineer', en: 'Pham Long Nhat · AI Engineer' };
+  var IO = 'IntersectionObserver' in window;
+
+  /* galleries */
+  var galleries = [];
+  document.querySelectorAll('[data-gallery]').forEach(function (g) {
+    var img = g.querySelector('.screen img');
+    var cap = g.querySelector('[data-cap-out]');
+    var buttons = g.querySelectorAll('.thumbs button');
+    function show(b, swap) {
+      buttons.forEach(function (x) { x.setAttribute('aria-pressed', String(x === b)); });
+      cap.textContent = b.dataset[root.lang === 'vi' ? 'capVi' : 'capEn'];
+      if (!swap || img.getAttribute('src') === b.dataset.src) return;
+      img.style.opacity = 0;
+      setTimeout(function () { img.src = b.dataset.src; img.alt = b.querySelector('img').alt; img.style.opacity = 1; }, 180);
+    }
+    buttons.forEach(function (b) { b.addEventListener('click', function () { show(b, true); }); });
+    galleries.push(function () { show(g.querySelector('.thumbs button[aria-pressed="true"]') || buttons[0], false); });
+  });
+
+  /* language */
+  function setLang(l, save) {
+    root.lang = l;
+    document.title = titles[l];
+    if (save) { try { localStorage.setItem('lang-pick', l); } catch (e) {} }
+    document.querySelectorAll('[data-set-lang]').forEach(function (b) { b.setAttribute('aria-pressed', String(b.dataset.setLang === l)); });
+    galleries.forEach(function (f) { f(); });
+  }
+  document.querySelectorAll('[data-set-lang]').forEach(function (b) {
+    b.addEventListener('click', function () { setLang(b.dataset.setLang, true); });
+  });
+  setLang(root.lang === 'vi' ? 'vi' : 'en');
+
+  /* scramble text for section kickers */
+  var glyphs = '!<>-_/[]{}=+*^?#ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+  function scramble(el) {
+    var final = el.dataset.final || (el.dataset.final = el.textContent);
+    var start = performance.now(), dur = 700;
+    (function frame(now) {
+      var p = Math.min(1, (now - start) / dur), out = '';
+      for (var i = 0; i < final.length; i++) {
+        var ch = final[i];
+        out += (ch === ' ' || ch === '/' || i < Math.floor(p * final.length)) ? ch : glyphs[Math.floor(Math.random() * glyphs.length)];
+      }
+      el.textContent = out;
+      if (p < 1) requestAnimationFrame(frame); else el.textContent = final;
+    })(start);
+  }
+
+  /* count-up */
+  function countUp(el) {
+    var to = parseFloat(el.dataset.to), from = parseFloat(el.dataset.from || 0), dec = +(el.dataset.dec || 0);
+    var start = performance.now(), dur = 1400;
+    (function frame(now) {
+      var p = Math.min(1, (now - start) / dur), e = 1 - Math.pow(1 - p, 3);
+      el.textContent = (from + (to - from) * e).toFixed(dec);
+      if (p < 1) requestAnimationFrame(frame);
+    })(start);
+  }
+
+  /* reveal */
+  function onReveal(el) {
+    el.classList.add('in');
+    el.querySelectorAll('[data-scramble]').forEach(scramble);
+    el.querySelectorAll('[data-to]').forEach(countUp);
+  }
+  var rvs = document.querySelectorAll('.rv');
+  if (IO) {
+    var io = new IntersectionObserver(function (es) {
+      es.forEach(function (e) { if (e.isIntersecting) { onReveal(e.target); io.unobserve(e.target); } });
+    }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+    rvs.forEach(function (el) { io.observe(el); });
+  } else { rvs.forEach(function (el) { el.classList.add('in'); }); }
+
+  /* pointer effects (mouse only) */
+  if (fine) {
+    var hero = document.getElementById('hero');
+    hero.addEventListener('pointermove', function (e) {
+      var r = hero.getBoundingClientRect();
+      hero.style.setProperty('--mx', (e.clientX - r.left) + 'px');
+      hero.style.setProperty('--my', (e.clientY - r.top) + 'px');
+    });
+    document.querySelectorAll('.spot').forEach(function (c) {
+      c.addEventListener('pointermove', function (e) {
+        var r = c.getBoundingClientRect();
+        c.style.setProperty('--x', (e.clientX - r.left) + 'px');
+        c.style.setProperty('--y', (e.clientY - r.top) + 'px');
+      });
+    });
+    if (!reduce) document.querySelectorAll('[data-tilt]').forEach(function (d) {
+      var host = d.parentElement;
+      host.addEventListener('pointermove', function (e) {
+        var r = d.getBoundingClientRect();
+        var x = (e.clientX - r.left) / r.width - .5, y = (e.clientY - r.top) / r.height - .5;
+        d.style.setProperty('--ry', (x * 8).toFixed(2) + 'deg');
+        d.style.setProperty('--rx', (-y * 6).toFixed(2) + 'deg');
+      });
+      host.addEventListener('pointerleave', function () { d.style.setProperty('--ry', '0deg'); d.style.setProperty('--rx', '0deg'); });
+    });
+  }
+
+  /* basin maths, shared with the 3D module */
+  var DENSITY = 2600, FILL = 0.85;
+  function profile(Dcm, Hcm, rings) {
+    var R = Dcm / 200, H = Hcm / 100, rb = R * 0.84;
+    var t = Math.min(0.09, Math.max(0.05, R * 0.13)), b = Math.max(0.07, H * 0.16), lip = H * 0.06, wallTop = H - lip;
+    function rOut(y) { return rb + (R - rb) * Math.pow(Math.max(0, Math.min(1, y / wallTop)), 0.75); }
+    var outer = [[0, 0], [rb - 0.01, 0], [rb, 0.01]], N = 80;
+    for (var i = 1; i <= N; i++) {
+      var y = wallTop * i / N, r = rOut(y);
+      for (var j = 1; j <= rings; j++) {
+        var yj = wallTop * (0.22 + 0.56 * (j - 0.5) / rings);
+        var d = Math.abs(y - yj); if (d < 0.014) r -= 0.009 * Math.cos(d / 0.014 * Math.PI / 2);
+      }
+      outer.push([r, y]);
+    }
+    outer.push([R + 0.014, wallTop + 0.004], [R + 0.014, H], [R - t + 0.01, H]);
+    var inner = [];
+    for (var k = 0; k <= 30; k++) { var yi = H - (H - b) * k / 30; inner.push([Math.max(0.02, rOut(yi) - t), yi]); }
+    inner.push([0, b]);
+    return { R: R, H: H, b: b, outer: outer, inner: inner, rIn: function (y) { return rOut(y) - t; } };
+  }
+  function frustum(pts, yMax) {
+    var v = 0;
+    for (var i = 1; i < pts.length; i++) {
+      var y1 = Math.min(pts[i - 1][1], yMax), y2 = Math.min(pts[i][1], yMax), h = Math.abs(y2 - y1);
+      var r1 = pts[i - 1][0], r2 = pts[i][0];
+      v += Math.PI * h / 3 * (r1 * r1 + r1 * r2 + r2 * r2);
+    }
+    return v;
+  }
+  var iD = document.getElementById('iD'), iH = document.getElementById('iH'), iR = document.getElementById('iR');
+  function basinUpdate() {
+    var D = +iD.value, H = +iH.value, rings = +iR.value, p = profile(D, H, rings);
+    var outerV = frustum(p.outer.slice(0, -1), p.H);
+    var cav = p.inner.slice(0, -1).reverse();
+    var cavity = frustum(cav, p.H);
+    var water = frustum(cav, p.b + (p.H - p.b) * FILL);
+    document.getElementById('oD').textContent = D + ' cm';
+    document.getElementById('oH').textContent = H + ' cm';
+    document.getElementById('oR').textContent = rings;
+    document.getElementById('vW').textContent = '≈ ' + Math.round(water * 1000) + ' L';
+    document.getElementById('vS').textContent = '≈ ' + Math.round((outerV - cavity) * DENSITY) + ' kg';
+    [iD, iH, iR].forEach(function (s) { s.style.setProperty('--p', ((s.value - s.min) / (s.max - s.min) * 100) + '%'); });
+  }
+  window.__basinProfile = function () { return profile(+iD.value, +iH.value, +iR.value); };
+  [iD, iH, iR].forEach(function (s) { s.addEventListener('input', function () { basinUpdate(); if (window.__basinRebuild) window.__basinRebuild(); }); });
+  basinUpdate();
+
+  /* floating zalo */
+  var fab = document.getElementById('fab'), heroOut = false, contactIn = false;
+  function upd() { fab.classList.toggle('show', heroOut && !contactIn); }
+  if (IO) {
+    new IntersectionObserver(function (es) { heroOut = !es[0].isIntersecting; upd(); }).observe(document.getElementById('hero'));
+    new IntersectionObserver(function (es) { contactIn = es[0].isIntersecting; upd(); }).observe(document.getElementById('contact'));
+  }
+
+  /* copy email */
+  var copyBtn = document.getElementById('copy');
+  copyBtn.addEventListener('click', function () {
+    var text = document.getElementById('email').textContent, label = copyBtn.innerHTML;
+    var done = function () { copyBtn.textContent = root.lang === 'vi' ? 'Đã chép' : 'Copied'; setTimeout(function () { copyBtn.innerHTML = label; }, 1800); };
+    if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(text).then(done).catch(selectIt); else selectIt();
+    function selectIt() { var r = document.createRange(); r.selectNodeContents(document.getElementById('email')); var s = window.getSelection(); s.removeAllRanges(); s.addRange(r); }
+  });
+})();
+</script>
+
+<script type="module">
+/* 3D basin: three.js loads only when the lab is near the viewport. The fallback image stays if anything fails. */
+const stage = document.getElementById('stage');
+const canvas = document.getElementById('basin');
+
+async function boot() {
+  let THREE, OrbitControls;
+  try {
+    THREE = await import('three');
+    ({ OrbitControls } = await import('three/addons/controls/OrbitControls.js'));
+  } catch (e) { console.warn('3D unavailable', e); return; }
+
+  let renderer;
+  try { renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true }); } catch (e) { console.warn('WebGL unavailable', e); return; }
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+  renderer.outputColorSpace = THREE.SRGBColorSpace;
+  renderer.toneMapping = THREE.ACESFilmicToneMapping;
+  renderer.toneMappingExposure = 1.05;
+
+  const scene = new THREE.Scene();
+  const camera = new THREE.PerspectiveCamera(30, 1, 0.01, 50);
+  scene.add(new THREE.HemisphereLight(0xfff4e6, 0x4a4234, 1.25));
+  const key = new THREE.DirectionalLight(0xffffff, 2.4); key.position.set(2.2, 3.2, 2.4); scene.add(key);
+  const rim = new THREE.DirectionalLight(0xa9c0ff, 0.9); rim.position.set(-3, 1.6, -2.4); scene.add(rim);
+
+  // granite texture drawn on a canvas, nothing to download
+  const tc = document.createElement('canvas'); tc.width = tc.height = 512;
+  const g = tc.getContext('2d');
+  g.fillStyle = '#9b978f'; g.fillRect(0, 0, 512, 512);
+  for (let i = 0; i < 60; i++) {
+    const x = Math.random() * 512, y = Math.random() * 512, r = 30 + Math.random() * 90;
+    const grd = g.createRadialGradient(x, y, 0, x, y, r);
+    const tone = Math.random() < .5 ? '255,255,255' : '40,36,30';
+    grd.addColorStop(0, `rgba(${tone},.07)`); grd.addColorStop(1, `rgba(${tone},0)`);
+    g.fillStyle = grd; g.fillRect(x - r, y - r, r * 2, r * 2);
+  }
+  for (let i = 0; i < 16000; i++) {
+    const v = Math.random();
+    g.fillStyle = v < .45 ? `rgba(45,42,38,${.25 + Math.random() * .5})` : v < .85 ? `rgba(225,222,214,${.2 + Math.random() * .5})` : `rgba(120,96,70,${.3 + Math.random() * .4})`;
+    const s = Math.random() < .9 ? 1 + Math.random() * 1.5 : 2 + Math.random() * 2.5;
+    g.fillRect(Math.random() * 512, Math.random() * 512, s, s);
+  }
+  const tex = new THREE.CanvasTexture(tc);
+  tex.colorSpace = THREE.SRGBColorSpace; tex.wrapS = tex.wrapT = THREE.RepeatWrapping; tex.repeat.set(5, 1.4); tex.anisotropy = 4;
+  const bump = new THREE.CanvasTexture(tc); bump.wrapS = bump.wrapT = THREE.RepeatWrapping; bump.repeat.copy(tex.repeat);
+  const stone = new THREE.MeshStandardMaterial({ map: tex, bumpMap: bump, bumpScale: 0.6, roughness: 0.86, metalness: 0, side: THREE.DoubleSide });
+  const waterMat = new THREE.MeshStandardMaterial({ color: 0x2c6f8c, roughness: 0.06, metalness: 0.25, transparent: true, opacity: 0.86 });
+
+  // soft contact shadow
+  const sc = document.createElement('canvas'); sc.width = sc.height = 256;
+  const sg = sc.getContext('2d'); const rg = sg.createRadialGradient(128, 128, 20, 128, 128, 128);
+  rg.addColorStop(0, 'rgba(40,32,22,.55)'); rg.addColorStop(1, 'rgba(40,32,22,0)'); sg.fillStyle = rg; sg.fillRect(0, 0, 256, 256);
+  const shadow = new THREE.Mesh(new THREE.PlaneGeometry(1, 1), new THREE.MeshBasicMaterial({ map: new THREE.CanvasTexture(sc), transparent: true, depthWrite: false }));
+  shadow.rotation.x = -Math.PI / 2; shadow.position.y = 0.001; scene.add(shadow);
+
+  const basin = new THREE.Mesh(new THREE.BufferGeometry(), stone); scene.add(basin);
+  const water = new THREE.Mesh(new THREE.BufferGeometry(), waterMat); scene.add(water);
+
+  const controls = new OrbitControls(camera, canvas);
+  controls.enableDamping = true; controls.enableZoom = false; controls.enablePan = false;
+  controls.autoRotate = true; controls.autoRotateSpeed = 1.4;
+  controls.minPolarAngle = 0.45; controls.maxPolarAngle = 1.32;
+  controls.addEventListener('start', () => { controls.autoRotate = false; });
+
+  function rebuild(first) {
+    const p = window.__basinProfile();
+    const pts = p.outer.concat(p.inner).map(([r, y]) => new THREE.Vector2(r, y));
+    basin.geometry.dispose();
+    basin.geometry = new THREE.LatheGeometry(pts, 160);
+    basin.geometry.computeVertexNormals();
+    const wy = p.b + (p.H - p.b) * 0.85;
+    water.geometry.dispose();
+    water.geometry = new THREE.CircleGeometry(p.rIn(wy), 96).rotateX(-Math.PI / 2);
+    water.position.y = wy;
+    shadow.scale.setScalar(p.R * 3.4);
+    controls.target.set(0, p.H * 0.42, 0);
+    const dist = Math.max(p.R * 2, p.H) * 2.6 + 0.35;
+    if (first) camera.position.set(dist * 0.62, p.H * 0.42 + dist * 0.5, dist * 0.62);
+    else {
+      const dir = camera.position.clone().sub(controls.target).normalize();
+      camera.position.copy(controls.target.clone().add(dir.multiplyScalar(dist)));
+    }
+  }
+  window.__basinRebuild = () => rebuild(false);
+  rebuild(true);
+
+  function resize() {
+    const w = stage.clientWidth, h = stage.clientHeight;
+    renderer.setSize(w, h, false); camera.aspect = w / h; camera.updateProjectionMatrix();
+  }
+  new ResizeObserver(resize).observe(stage); resize();
+
+  let visible = true;
+  new IntersectionObserver(es => { visible = es[0].isIntersecting; }).observe(stage);
+  renderer.setAnimationLoop(() => { if (!visible) return; controls.update(); renderer.render(scene, camera); });
+  stage.classList.add('ready');
+}
+
+if ('IntersectionObserver' in window) {
+  const io = new IntersectionObserver(es => { if (es[0].isIntersecting) { io.disconnect(); boot(); } }, { rootMargin: '600px 0px' });
+  io.observe(stage);
+} else { boot(); }
+</script>
+</body>
+</html>
